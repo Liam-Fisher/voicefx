@@ -1,0 +1,51 @@
+
+<div id="web-audio-api" *ngIf="(isAudioLoaded|async)">
+  <form>
+    <select class="device-selection-menu-trigger"
+      (change)="updateDevice($event)"
+    >
+    <option value="''">
+      -- Select a device --
+    </option>
+      <option
+        *ngFor="let device_id of (deviceList|async)"
+        (click)="updateDevice(device_id)"
+      >
+        {{ device_id }}
+      </option>
+    </select>
+    
+  </form>
+    <!-- <section id="device-loader">
+      <app-device-menu-ui [deviceList]="(deviceList|async)" (deviceSelected)="updateDevice($event)"></app-device-menu-ui>
+    </section> -->
+    
+    <!--
+    conditionally render some components of the device ui
+    e.g. midi only uses inports, so we don't need to render the parameter ui
+    -->
+    <div class="device-ui" *ngIf="(isDeviceLoaded|async)">
+      <div
+        class="device-parameter-container"
+        *ngFor="let parameter of params; let i = index"
+      >
+      <app-number-parameter-ui
+              [param]="parameter"
+              [paramStyle]="pStyles"
+              (update)="updateParameter($event, i)"
+            ></app-number-parameter-ui>
+            <!-- <app-parameter-ui
+              [parameter]="parameter"
+              [precision]="4"
+              [isNormalized]="false"
+              (update)="updateParameter($event, i)"
+            ></app-parameter-ui>
+          </div>
+          <div class="device-inport-container">
+            <app-inport-ui
+              [inportInfo]="inports"
+            >
+            </app-inport-ui>
+          </div> -->
+        </div>
+      </div>

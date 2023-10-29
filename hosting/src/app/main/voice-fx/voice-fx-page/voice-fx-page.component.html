@@ -1,0 +1,42 @@
+
+<app-recording-ui></app-recording-ui>
+<section id="audio-options">
+  <button
+    mat-button
+    *ngIf="!(isAudioLoaded | async)"
+    mat-button
+    (click)="loadAudio()"
+  >
+    Load WebAudio
+  </button>
+  <button
+    mat-button
+    *ngIf="isAudioLoaded | async"
+    mat-button
+    (click)="testAudio()"
+  >
+    Test WebAudio
+  </button>
+</section>
+
+<app-rnbo-device
+  #fxDevice
+  device_type="voice-fx"
+  [isAudioLoaded]="isAudioLoaded"
+  [deviceList]="deviceList"
+  [isDeviceLoaded]="isDeviceLoaded"
+  [deviceID]="deviceID"
+  [bufferIDs]="bufferIDs"
+></app-rnbo-device> 
+<!--
+<div id="bufferSelectors" *ngIf="isDeviceLoaded | async">
+  <div class="buffer-container" *ngFor="let buffer_id of bufferIDs | async">
+    <label class="buffer-label">{{ buffer_id }}</label>
+    <app-buffer-loader
+      [buffer_id]="buffer_id"
+      [recordingIDs]="recordingIDs"
+      (selectRecording)="loadRecordingIntoBuffer($event)"
+    ></app-buffer-loader>
+  </div>
+</div>
+--> 

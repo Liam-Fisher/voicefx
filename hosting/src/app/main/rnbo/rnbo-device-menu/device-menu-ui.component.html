@@ -1,0 +1,9 @@
+
+  <select class="device-selection-menu-trigger">
+    <option
+      *ngFor="let device_id of deviceList"
+      (click)="deviceSelected.emit(device_id)"
+    >
+      {{ device_id }}
+    </option>
+  </select>
