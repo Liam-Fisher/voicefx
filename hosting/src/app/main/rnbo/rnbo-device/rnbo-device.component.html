@@ -49,3 +49,25 @@
           </div> -->
         </div>
       </div>
+
+      <!-- <div class="device-ui" 
+*ngFor="let paramType of styling.paramTypes" 
+[ngStyle]="styling.getGridArea(paramType)">
+
+  <div class="container"
+      *ngFor="let param of styling.paramData[paramType]"
+      >
+  
+  <app-panel 
+  *ngIf="paramType=='panel'"
+  [size]="styling.defaultParamDivWidth(paramType)"
+  [param]="param"
+  ></app-panel>
+  <app-menu 
+  *ngIf="paramType=='menu'"
+  [size]="styling.defaultParamDivWidth(paramType)"
+  [param]="param"
+  ></app-menu>
+</div>
+</div> 
+ -->
