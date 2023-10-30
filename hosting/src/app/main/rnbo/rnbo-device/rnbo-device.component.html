@@ -25,19 +25,15 @@
     -->
 
     <div #deviceui class="device-ui">
-      <div #numberui class = 'device-ui-container'>
       <app-number-parameter-ui
             *ngFor="let number_parameter of rnboService.numberParameters; let i = index"
             [ngClass]="number_parameter.name"
             [paramUI]="number_parameter"
             ></app-number-parameter-ui>
-        </div>
-    </div>
-    <div #enumui class = 'device-ui-container'>
-    <app-enum-parameter-ui
+    <!-- <app-enum-parameter-ui
           *ngFor="let enum_parameter of rnboService.enumParameters; let i = index"
           [ngClass]="enum_parameter.name"
           [paramUI]="enum_parameter"
-          ></app-enum-parameter-ui>
-      </div>
+          ></app-enum-parameter-ui> -->       
+    </div>
 </div>
