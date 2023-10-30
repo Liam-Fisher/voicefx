@@ -1,48 +1,32 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as RNBO from '@rnbo/js';
 import Nexus from 'nexusui';
-import { StyleService } from 'src/app/services/style.service';
-
+import { NumberParameterUI } from 'src/app/helpers/rnbo/inputs';
+import { StylingService } from 'src/app/services/styling.service';
+export interface ParameterStyle {
+  labelsize?: number;
+  uisize?: number;
+  accent?: string;
+  background?: string;
+  fill?: string;
+}
 @Component({
   selector: 'app-number-parameter-ui',
-//  templateUrl: './number-parameter-ui.component.html',
-  template: `
-  <div class="number-param-ui-container"
-  [ngStyle]="{
-    'width': paramStyle?.size ?? 100,
-    'height': paramStyle?.size ?? 100
-  }"
-  >
-    <label 
-    class="number-param-label" 
-    for="nexus-dial"
-    >{{param.name}}
-  </label>
-        <div id="nexus-dial"></div>
-  </div>`,
-  styles: [`
-  .number-param-ui-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }`
-]
-  //styleUrls: ['./number-parameter-ui.component.css']
+ templateUrl: './number-parameter-ui.component.html',
+  styleUrls: ['./number-parameter-ui.component.css']
 })
 export class NumberParameterUiComponent {
-  @Input() param!: (RNBO.NumberParameter); //
+  @Input() paramUI!: (NumberParameterUI);
   @Input() paramStyle?: any; //  [number, number];
   dial_element!: any;
-  constructor(public style: StyleService) { }
+  constructor(public styling: StylingService) { }
   ngAfterViewInit(): void {
-    console.log(`parameter-ui ${this.param.id}: ${this.param.name}`);
-    const step = this.steps;
+    console.log(`number-parameter-ui ${this.paramUI.name}`);
+    const step = this.paramUI.numSteps;
     console.log(this.paramStyle);
-    this.createDialElement(step, this.param.value);
-
+    this.createDialElement(step, this.paramUI.value);
     this.dial_element.on('change', (value: number) => {
-      this.param.value = value;
+      this.paramUI.value = value;
       console.log(`parameter changed to ${value} with dial`);
     });
   }
@@ -62,14 +46,4 @@ export class NumberParameterUiComponent {
   });
   }
 
-  denorm(norm: number): number {
-      return this.param.convertFromNormalizedValue(norm);
-  } 
-get displayValue(): string {
-    return `${this.denorm(this.param.value).toFixed(2)} ${this.param.unit}`;
-}
-// from parameterStyle
-  get steps(): number {
-    return this.param?.steps ? this.param.steps/(this.denorm(1) - this.denorm(0)) : 0;
-  }
 } 

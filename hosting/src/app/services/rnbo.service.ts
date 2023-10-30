@@ -1,4 +1,4 @@
-import {  Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as RNBO from '@rnbo/js';
 import { AudioService } from './audio.service';
 import { DatabaseService } from './database.service';
@@ -9,30 +9,51 @@ import {
   DeviceLoadOptions,
 } from '../types/rnbo/service';
 import { emit_sync_event } from '../helpers/rnbo/eventEmitters';
-import {  SyncEventName, eventData } from '../types/rnbo/events';
-import { StyleService } from './style.service';
+import { SyncEventName, eventData } from '../types/rnbo/events';
+import { StylingService } from './styling.service';
+import { InputAttributes, InputType } from '../types/rnbo/deviceInput';
+import {
+  EnumParameterUI,
+  ListInportUI,
+  MessageInportUI,
+  NumberParameterUI,
+} from '../helpers/rnbo/inputs';
+import { sortInports, sortParams } from '../helpers/rnbo/sorters';
 
-
+/* type Metadata = {meta: Record<string, string>};
+type Parameter = RNBO.IParameterDescription & Metadata;
+type MessageInport =  Metadata & {
+  tag: string;
+}; */
 @Injectable({
   providedIn: 'root',
 })
 export class RnboService {
   device!: RNBO.BaseDevice;
   patcher!: RNBO.IPatcher;
+  //  use dials
+  numberParameters: NumberParameterUI[] = [];
+  // use select menus
+  enumParameters: EnumParameterUI[] = [];
+  // use  <select> to set tag and <input> to set message
+  messageInports: MessageInportUI[] = [];
+  // various nexusUI elements
+  listInports: ListInportUI[] = [];
   constructor(
-    private webAudio: AudioService, 
+    private webAudio: AudioService,
     private db: DatabaseService,
-    private style: StyleService
-    ) {}
+    private styling: StylingService
+  ) {}
   async loadDeviceList(folder: string) {
     let deviceList = await this.db.listStorageNames(`rnbo_devices/${folder}`);
-    deviceList.forEach((name: string) => console.log(`loaded device ${name} from folder `));
     return deviceList;
   }
-   async loadRecordingsList() {
+  async loadRecordingsList() {
     console.log(`loading recordings list`);
     let recordingList = await this.db.listStorageNames(`media/userRecordings`);
-    recordingList.forEach((name: string) => console.log(`loaded user recording ${name} `));
+    recordingList.forEach((name: string) =>
+      console.log(`loaded user recording ${name} `)
+    );
     return recordingList;
   }
   async loadDevice(
@@ -46,45 +67,28 @@ export class RnboService {
       )) as RNBO.IPatcher;
       this.device = await RNBO.createDevice({ context, patcher: this.patcher });
       this.webAudio.addNode(id, this.device.node, options?.connections);
-      if (options?.logPatcher) {
-        console.log(`logging patcher object for rnbo device`);
-        console.log(this.patcher);
-  
-      } if (options?.logDevice) {
-        console.log(`logging patcher object for rnbo device`);
-        console.log(this.device);
-  
-      }
+      console.log(`----------------logging rnbo patcher----------------`);
+      console.log(this.patcher);
+      console.log(`----------------logging rnbo device-----------------`);
+      console.log(this.device);
     } catch (err) {
       throw err;
     }
-    this.style.patcher = this.patcher;
-    for(let i=0; i<this.device.numParameters; i++) {
-      let paramDesc = this.patcher.desc.parameters[i] as RNBO.IParameterDescription & {meta: Record<string, string>}; 
-      this.device.parameters[i].meta = paramDesc?.meta ?? {'element': 'slider'};
-    }
-    this.device.parameters.forEach((param) => {
-      console.log(`parameter ${param.id} has meta:`);
-      console.log(param.meta);
-    
-    });
+    sortParams.call(this);
+    sortInports.call(this);
     return this.device;
   }
   async loadBuffer(
     data: BufferLoadData,
-    options: BufferLoadOptions
+    channelCount?: number
   ): Promise<void> {
-    let device: RNBO.BaseDevice;
     let buffer: AudioBuffer | Float32Array | ArrayBuffer;
     let { buffer_id, buffer_src } = data;
-    let { device_id, channelCount } = options;
     try {
       buffer =
         typeof buffer_src === 'string'
           ? await this.db.loadAudio(this.webAudio.ctx, buffer_src)
           : buffer_src;
-
-      ;
 
       let buf_id =
         typeof buffer_id === 'string'
@@ -94,22 +98,18 @@ export class RnboService {
       if (buffer instanceof ArrayBuffer || buffer instanceof Float32Array) {
         let cc = channelCount ?? 1;
         let sr = this.webAudio.ctx?.sampleRate ?? 44100;
-        console.log(`creating buffer with channelCount: ${cc} and sampleRate: ${sr}`);
+        console.log(
+          `creating buffer with channelCount: ${cc} and sampleRate: ${sr}`
+        );
         console.log(buffer);
         return this.device.setDataBuffer(buf_id, buffer, cc, sr);
       }
-
       return this.device.setDataBuffer(buf_id, buffer);
-
     } catch (err) {
       console.error(err);
     }
   }
-  emitSyncEvent(
-    name: SyncEventName,
-    data: eventData,
-    device_id?: string
-    ) {
+  emitSyncEvent(name: SyncEventName, data: eventData) {
     console.log(`emitting event`);
     try {
       let event = emit_sync_event(name, data);

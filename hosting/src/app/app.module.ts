@@ -13,11 +13,9 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 
 import {VoiceFxModule}  from './main/voice-fx/voice-fx.module';
-import { ServicesComponent } from './services/services/services.component';
 @NgModule({
   declarations: [
-    AppComponent,
-    ServicesComponent
+    AppComponent
   ],
   imports: [
     // Angular Core Components

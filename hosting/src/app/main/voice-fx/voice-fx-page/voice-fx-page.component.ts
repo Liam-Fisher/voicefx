@@ -48,6 +48,6 @@ export class VoiceFxPageComponent {
     buffer_src = `user_recordings/${buffer_src}`;
     let device_id = this.deviceID.value;
     let channelCount = 1;
-    this.rnboService.loadBuffer({buffer_id, buffer_src}, {device_id, channelCount});
+    this.rnboService.loadBuffer({buffer_id, buffer_src}, channelCount);
   }
 }

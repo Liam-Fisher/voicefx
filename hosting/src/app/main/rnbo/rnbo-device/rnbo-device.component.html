@@ -14,7 +14,6 @@
         {{ device_id }}
       </option>
     </select>
-    
   </form>
     <!-- <section id="device-loader">
       <app-device-menu-ui [deviceList]="(deviceList|async)" (deviceSelected)="updateDevice($event)"></app-device-menu-ui>
@@ -24,50 +23,21 @@
     conditionally render some components of the device ui
     e.g. midi only uses inports, so we don't need to render the parameter ui
     -->
-    <div class="device-ui" *ngIf="(isDeviceLoaded|async)">
-      <div
-        class="device-parameter-container"
-        *ngFor="let parameter of params; let i = index"
-      >
+
+    <div #deviceui class="device-ui">
+      <div #numberui class = 'device-ui-container'>
       <app-number-parameter-ui
-              [param]="parameter"
-              [paramStyle]="pStyles"
-              (update)="updateParameter($event, i)"
+            *ngFor="let number_parameter of rnboService.numberParameters; let i = index"
+            [ngClass]="number_parameter.name"
+            [paramUI]="number_parameter"
             ></app-number-parameter-ui>
-            <!-- <app-parameter-ui
-              [parameter]="parameter"
-              [precision]="4"
-              [isNormalized]="false"
-              (update)="updateParameter($event, i)"
-            ></app-parameter-ui>
-          </div>
-          <div class="device-inport-container">
-            <app-inport-ui
-              [inportInfo]="inports"
-            >
-            </app-inport-ui>
-          </div> -->
         </div>
+    </div>
+    <div #enumui class = 'device-ui-container'>
+    <app-enum-parameter-ui
+          *ngFor="let enum_parameter of rnboService.enumParameters; let i = index"
+          [ngClass]="enum_parameter.name"
+          [paramUI]="enum_parameter"
+          ></app-enum-parameter-ui>
       </div>
-
-      <!-- <div class="device-ui" 
-*ngFor="let paramType of styling.paramTypes" 
-[ngStyle]="styling.getGridArea(paramType)">
-
-  <div class="container"
-      *ngFor="let param of styling.paramData[paramType]"
-      >
-  
-  <app-panel 
-  *ngIf="paramType=='panel'"
-  [size]="styling.defaultParamDivWidth(paramType)"
-  [param]="param"
-  ></app-panel>
-  <app-menu 
-  *ngIf="paramType=='menu'"
-  [size]="styling.defaultParamDivWidth(paramType)"
-  [param]="param"
-  ></app-menu>
 </div>
-</div> 
- -->

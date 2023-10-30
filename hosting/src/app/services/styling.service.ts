@@ -1,24 +1,23 @@
 import {Injectable} from '@angular/core';
+import * as RNBO from '@rnbo/js';
 import { BehaviorSubject, debounceTime } from 'rxjs';
-import { Param } from './testParams';
-
-export type Param = {
-  type: string;
-  enumValues: string[];
-  name: string;
-  color: string;
-}
-
+import { EnumParameterUI, ListInportUI, MessageInportUI, NumberParameterUI } from '../helpers/rnbo/inputs';
+import { InputType } from '../types/rnbo/deviceInput';
+type Metadata = {meta: Record<string, string>};
+type Parameter = RNBO.IParameterDescription & Metadata;
+type MessageInport =  Metadata & {
+  tag: string;
+};
 @Injectable({
   providedIn: 'root'
 })
-export class StyleService {
+export class StylingService {
   defaultContainerStyle = {
     'font-size.px': 12,
     'display': 'grid'
   };
   defaultParameterContainerStyles = {};
-
+useDefault: boolean = true;
  // paramType: Set<string> = new Set(['menus', 'panels']);
   //gridAreas: Record<string, string> = {};
   gridLayout: Record<string, [string, string]> = {};
@@ -29,89 +28,69 @@ export class StyleService {
   resizeCount: number = 0;
   hasPiano!: boolean;
   envelope!: boolean;
-  paramStyle: Param[] = [];
-  paramData: Record<string, Param[]> = {};  
+  defaultDeviceUI: Record<string, any> = {
+
+  }
+  
+
+
+  paramData: Record<string, any[]> = {};  
+  uiData: Record<string, any[]> = {};
   // Device queries
   hasMouse!: boolean;
   //deviceUIwidth = new BehaviorSubject<number>(window.innerWidth);
   constructor() {
     this.hasMouse = window.matchMedia("(pointer: fine)").matches;
-
-  }
+  } 
   get paramTypes(): string[] {
     return Object.keys(this.paramData);
   }
-  getGridArea(paramType: string) {
-    console.log(`styling grid rows for ${paramType}: ${this.gridLayout?.[paramType][0]}`);
-    console.log(`styling grid columns for ${paramType}: ${this.gridLayout?.[paramType][1]}`);
-    
-    return {
-      'grid-template-rows': this.gridLayout?.[paramType][0],
-      'grid-template-columns': this.gridLayout?.[paramType][1]
-    };
-  }
-  
-  createUILayout(p: Param[]) {
-    this.changeLogger();
-    this.parseParams(p);
-    this.maxLogger();
-    this.createGrids();
-    this.paramLogger();
-  }
-  parseParams(p: Param[]) {
-    console.log(p);
-    for(let param of p) {
-      console.log(`parsing param ${param.name}`);
-      let t = param.type;
-      this.paramData[t] ??= [];
-      this.labelLengths[t] ??= 0;
-      let maxLabelLength = param.name.length;
-      if(param.enumValues.length) {
-        maxLabelLength = Math.max(maxLabelLength, 
-          ...param.enumValues.map((el) => el.length));
-      }
-      this.labelLengths[t] = Math.max(this.labelLengths[t], maxLabelLength);
-      this.paramData[t].push(param);
+
+  styleNumberContainerUI(container: HTMLDivElement, parameters: NumberParameterUI[]) {
+    let labelChars = this.evenNumberParameterWidth(parameters);
+    let fontSize = +container.style.getPropertyValue('font-size').slice(0, -2);
+    console.log(`parameter number container has  ${container.offsetWidth} width and fontSize ${fontSize}`);
+    let parameterWidth = labelChars*fontSize+2;
+    console.log(`parameter number container has width ${parameterWidth}`);
+    let columns = Math.floor(container.offsetWidth/(labelChars*fontSize+2));
+    console.log(`parameter number container has  ${container.offsetWidth} width and fontSize ${fontSize}`);
+    console.log(`styling parameter number container with ${columns} columns`);
+    return { 
+      'display': 'grid',
+      'grid-template-columns': `repeat(${columns}, 1fr)`,
+      'grid-template-rows': 'auto'
     }
-  }
-  createGrids() {
-    for(let key in this.paramData) {
-      console.log(`creating ${key} grid`);
-        let areas = this.createParameterGrid(
-          this.paramData[key].map(p => p.name), 
-          this.defaultParamDivWidth(key), 
-          this.defaultParamDivHeight(key), 
-          window.innerWidth
-          );
-        console.log(`grid template rows: for ${key} ${areas[0]}`);
-        console.log(`grid template columns: for ${key} ${areas[1]}`);
-        
-        this.gridLayout[key] = areas;
-      }
-  }
-  createParameterGrid(items: string[], width: number, height: number, containerWidth: number): [string, string] {
-
-    let itemCount = items.length; 
-    let rows = 1;
-    let columns = itemCount;
-    let rowLength = width*itemCount;
-    let gridTemplateRows: string;
-    let gridTemplateColumns: string;
-
-
-    console.log(`placing ${itemCount} items: row length is ${rowLength} and containerWidth is ${containerWidth}`);
-    console.log(`param width is ${width}`);
-    if(rowLength > containerWidth) {
-      rows =  Math.ceil(rowLength/containerWidth);
-      columns = Math.floor(itemCount/rows);
+  }/* 
+  styleEnumContainerUI(container: HTMLDivElement, parameters: EnumParameterUI[]) {
+    let maxLabelLength = 0;
+    for(let param of enumParameters) {
+      let enumValues = param.enumValues;
+      maxLabelLength = Math.max(
+        param.name.length,
+        maxLabelLength, 
+        ...enumValues.map((el) => el.length));
     }
-
-    console.log(`row grid dimensions: ${rows} x ${columns}`);
-    gridTemplateRows = `${height}px `.repeat(rows).trim();
-    gridTemplateColumns = `${width}px `.repeat(columns).trim();
-    return [gridTemplateRows, gridTemplateColumns];
+    let fontSize = +container.style.getPropertyValue('font-size').slice(0, -2);
+    let columns = Math.floor(container.offsetWidth/(maxLabelLength *fontSize+2));
+    console.log(`styling parameter number container with ${columns} columns`);
+    return { 
+      'grid-template-columns': `repeat(${columns}, 1fr)`,
+      'grid-template-rows': 'auto'
+    }
+  } */
+  parseNumberUIStyle(container: HTMLDivElement, section: HTMLDivElement, parameters: NumberParameterUI[]) {
+    return { 'grid-template-rows': '1fr'}
   }
-  
+  styleListContainerUI(container: HTMLDivElement, parameters: NumberParameterUI[]) {
+    return { 'grid-template-rows': '1fr'}
+  }
+evenNumberParameterWidth(parameters: NumberParameterUI[]): number {
+  let maxLabelLength = 0;
+  for(let param of parameters) {
+    maxLabelLength = Math.max(maxLabelLength, param.name.length);
+  }
+  return maxLabelLength;
+}
   changeLogger() {
     console.log(`window height: ${window.innerHeight}`);
     console.log(`window width: ${window.innerWidth}`);
@@ -128,6 +107,11 @@ export class StyleService {
       console.log(`${key} names: ${this.paramData[key].map(p => p.name).join()}`);
     }
   }
+defaultEnumDivWidth(param: string): number {
+  let labelPixels = this.labelLengths[param]*this.defaultContainerStyle['font-size.px'];
+  return Math.max(Math.min(labelPixels, 250), 50);
+  
+}
 defaultParamDivWidth(param: string): number {
   let labelPixels = this.labelLengths[param]*this.defaultContainerStyle['font-size.px'];
   return Math.max(Math.min(labelPixels, 250), 50);
