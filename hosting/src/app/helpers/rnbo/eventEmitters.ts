@@ -3,12 +3,13 @@ import * as RNBO from '@rnbo/js';
 type SyncEventName = 'message'|'midi'|'beattime'|'tempo'|'timesignature'|'transport';
 type eventData = number|((string | number | number[])[]);
 
+
+
 export function emit_sync_event<T extends SyncEventName>(
   name: T,
   data: eventData,
   time: number = 0
 ): RNBO.Event {
-
   switch (name) {
     case 'message':
       if (!isMessageData(data)) {

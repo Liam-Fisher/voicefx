@@ -5,120 +5,116 @@ import { DatabaseService } from './database.service';
 
 import {
   BufferLoadData,
-  BufferLoadOptions,
-  DeviceLoadOptions,
+  DeviceLoadData
 } from '../types/rnbo/service';
 import { emit_sync_event } from '../helpers/rnbo/eventEmitters';
 import { SyncEventName, eventData } from '../types/rnbo/events';
-import { StylingService } from './styling.service';
-import { InputAttributes, InputType } from '../types/rnbo/deviceInput';
-import {
-  EnumParameterUI,
-  ListInportUI,
-  MessageInportUI,
-  NumberParameterUI,
-} from '../helpers/rnbo/inputs';
-import { sortInports, sortParams } from '../helpers/rnbo/sorters';
-
+import { BehaviorSubject } from 'rxjs';
+import { setDevice, setDeviceBuffer } from '../helpers/rnboService/setters';
+import { EnumUIData, ListUIData, NumberUIData } from '../types/rnbo/inputs/dataTypes';
+import DialUI from '../types/rnbo/inputs/numberParameters/dial';
+import NumberUI from '../types/rnbo/inputs/numberParameters/number';
+import SliderUI from '../types/rnbo/inputs/numberParameters/slider';
+import { ToggleUI } from '../types/rnbo/inputs/enumParameters/toggle';
+import { SelectUI } from '../types/rnbo/inputs/enumParameters/select';
+import PianoUI from '../types/rnbo/inputs/listParameters/kslider';
+import EnvelopeUI from '../types/rnbo/inputs/listParameters/function';
+import { initializeInportUIs, initializeParameterUIs } from '../helpers/rnboService/ui';
 /* type Metadata = {meta: Record<string, string>};
 type Parameter = RNBO.IParameterDescription & Metadata;
 type MessageInport =  Metadata & {
   tag: string;
 }; */
+type UIClasses = DialUI|NumberUI|SliderUI|ToggleUI|SelectUI|PianoUI|EnvelopeUI;
 @Injectable({
   providedIn: 'root',
 })
 export class RnboService {
-  device!: RNBO.BaseDevice;
+  deviceFolders = new BehaviorSubject<string[]>([]);
+  deviceList = new BehaviorSubject<string[]>([]);
+
   patcher!: RNBO.IPatcher;
+
+  // Active Device
+  device!: RNBO.BaseDevice;
+  isDeviceLoaded = new BehaviorSubject(false);
+  deviceID = new BehaviorSubject<string>('');
+  //bufferIDs = new BehaviorSubject<string[]>([]);
   //  use dials
-  numberParameters: NumberParameterUI[] = [];
+  numberParameters: NumberUIData[] = [];
   // use select menus
-  enumParameters: EnumParameterUI[] = [];
-  // use  <select> to set tag and <input> to set message
-  messageInports: MessageInportUI[] = [];
+  enumParameters: EnumUIData[] = [];
   // various nexusUI elements
-  listInports: ListInportUI[] = [];
+  listInports: ListUIData[] = [];
+
+  // use  <select> to set tag and <input> to set message
+ // messageInports: MessageUIData[] = [];
+  uiNames: string[] = [];
+  uiElements: UIClasses[] = [];
+  //uis: Map<string, UIClasses> = new Map();
+  // messageInports: Set<string> = new Set();
+  isUILoaded = new BehaviorSubject(false);
+  
   constructor(
     private webAudio: AudioService,
-    private db: DatabaseService,
-    private styling: StylingService
-  ) {}
+    private db: DatabaseService
+  ) //private styling: StylingService
+  {}
   async loadDeviceList(folder: string) {
-    let deviceList = await this.db.listStorageNames(`rnbo_devices/${folder}`);
-    return deviceList;
+    return this.db.listStorageNames(`rnbo_devices/${folder}`);
   }
   async loadRecordingsList() {
-    console.log(`loading recordings list`);
-    let recordingList = await this.db.listStorageNames(`media/userRecordings`);
-    recordingList.forEach((name: string) =>
-      console.log(`loaded user recording ${name} `)
-    );
-    return recordingList;
+    return await this.db.listStorageNames(`media/userRecordings`);
   }
-  async loadDevice(
-    id: string,
-    options?: DeviceLoadOptions
-  ): Promise<RNBO.BaseDevice | null> {
-    try {
-      const context = this.webAudio.ctx;
-      this.patcher = (await this.db.loadJSON(
-        `rnbo_devices/${options?.folder}/${id}.export`
-      )) as RNBO.IPatcher;
-      this.device = await RNBO.createDevice({ context, patcher: this.patcher });
-      this.webAudio.addNode(id, this.device.node, options?.connections);
-      console.log(`----------------logging rnbo patcher----------------`);
-      console.log(this.patcher);
-      console.log(`----------------logging rnbo device-----------------`);
-      console.log(this.device);
-    } catch (err) {
-      throw err;
-    }
-    sortParams.call(this);
-    sortInports.call(this);
+  async loadBuffer(data: BufferLoadData) {
+    await setDeviceBuffer.call(this, data);
+  }
+  async loadDevice(data: DeviceLoadData): Promise<RNBO.BaseDevice | null> {
+    this.isDeviceLoaded.next(false);
+    console.log(`loading device ${data.id}`);
+  
+    await setDevice.call(this, data);
+    
+    console.log(`loading uis`);
+    initializeParameterUIs.call(this);
+    initializeInportUIs.call(this);
+    console.log(`ui names`);
+    console.log(this.uiNames);
+    this.uiElements.forEach((ui) => {
+      console.log('logging meta');
+      console.log(ui.meta);
+    });
+    this.isDeviceLoaded.next(true);
     return this.device;
   }
-  async loadBuffer(
-    data: BufferLoadData,
-    channelCount?: number
-  ): Promise<void> {
-    let buffer: AudioBuffer | Float32Array | ArrayBuffer;
-    let { buffer_id, buffer_src } = data;
-    try {
-      buffer =
-        typeof buffer_src === 'string'
-          ? await this.db.loadAudio(this.webAudio.ctx, buffer_src)
-          : buffer_src;
-
-      let buf_id =
-        typeof buffer_id === 'string'
-          ? buffer_id
-          : this.device.dataBufferDescriptions[buffer_id]?.id;
-
-      if (buffer instanceof ArrayBuffer || buffer instanceof Float32Array) {
-        let cc = channelCount ?? 1;
-        let sr = this.webAudio.ctx?.sampleRate ?? 44100;
-        console.log(
-          `creating buffer with channelCount: ${cc} and sampleRate: ${sr}`
-        );
-        console.log(buffer);
-        return this.device.setDataBuffer(buf_id, buffer, cc, sr);
-      }
-      return this.device.setDataBuffer(buf_id, buffer);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  
+    //sortParams.call(this);
+    //console.log(`params: ${this.numberParameters.map(p => p.param.name)}: {}`);
+    //sortInports.call(this);
+    //this.bufferIDs.next(this.buf_ids);
   emitSyncEvent(name: SyncEventName, data: eventData) {
     console.log(`emitting event`);
     try {
       let event = emit_sync_event(name, data);
-      console.log(`scheduling event,...`);
-      console.log(event);
       this.device.scheduleEvent(event);
     } catch (err) {
       console.error(err);
     }
+  }
+  debugOutports() {
+    this.device.messageEvent.subscribe((evt) => console.log(`${evt.tag}: ${evt.payload} at ${evt.time}`));
+
+  }
+  get context(): AudioContext {
+    return this.webAudio.ctx;
+  }
+  get bufferIDs(): string[] {
+    return this.device.dataBufferDescriptions.map(
+      (dBD: RNBO.ExternalDataInfo) => dBD.id
+    );
+  }
+  get inports(): string[] {
+    return this.device?.inports.map((inport) => inport.tag) ?? [];
   }
 }
 

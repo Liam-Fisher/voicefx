@@ -40,6 +40,9 @@ async loadBlob(path: string) {
 async loadJSON(path: string) {
   return JSON.parse(await (await this.loadBlob(`${path}.json`)).text());
 }
+async loadPatcher(folder: string, id: string) {
+  return this.loadJSON(`rnbo_devices/${folder}/${id}.export`);
+}
 async loadAudio(audioCtx: AudioContext, path: string): Promise<AudioBuffer> {
   console.log(`audio from path ${path}`)
   let bytes = await getBytes(ref(this.storage, path));

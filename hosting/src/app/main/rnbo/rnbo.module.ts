@@ -12,18 +12,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { RnboLoaderService } from './services/rnbo-loader.service';
 // import { RnboEventHubService } from './services/rnbo-event-hub.service';
 // Main Interface
-import { RnboDeviceComponent } from './rnbo-device/rnbo-device.component';
-import { ParameterUI } from './parameter/parameter-ui.component';
 import { NumberParameterUiComponent } from './number-parameter-ui/number-parameter-ui.component';
+import { DeviceMenuUI } from './rnbo-device-menu/device-menu-ui.component';
+import { DeviceUI } from './device-ui/device-ui.component';
+import { EnumParameterUiComponent } from './enum-parameter-ui/enum-parameter-ui.component';
+import { MessageInportUIComponent } from './message-inport-ui/message-inport-ui.component';
 @NgModule({
   declarations: [
-   /*  InportUI,
-    ParameterUI,
-    DeviceMenuUI, */
-    ParameterUI,
-    RnboDeviceComponent,
-    NumberParameterUiComponent
-    
+    DeviceUI,
+    DeviceMenuUI, 
+    NumberParameterUiComponent,
+    EnumParameterUiComponent,
+    MessageInportUIComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,8 +31,9 @@ import { NumberParameterUiComponent } from './number-parameter-ui/number-paramet
     ReactiveFormsModule
   ],
   exports: [ 
-    RnboDeviceComponent,
-    NumberParameterUiComponent
+    DeviceMenuUI, 
+    DeviceUI,
+    MessageInportUIComponent
   ],
   providers: []
 })

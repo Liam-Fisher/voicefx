@@ -1,0 +1,17 @@
+
+<app-message-inport-ui
+
+></app-message-inport-ui>
+<div class="ui-container" 
+*ngFor="let uiName of rnboService.uiNames"
+[id]="uiName+'-ui'" 
+[title]="uiName"
+>
+</div>
+
+<!-- <app-number-parameter-ui
+*ngFor="let numberParameter of rnboService.numberParameters"
+[meta]="numberParameter.meta"
+[param]="numberParameter.param"
+></app-number-parameter-ui> 
+ -->

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 // src_id, src_outlet, tgt_id, tgt_inlet
 ///type NodeConnection =  [number, number, number, number]
@@ -34,12 +34,12 @@ interface ConnectionMap {
 })
 export class AudioService {
   
-  audioLoaded!: Observable<boolean>;
-
+  isAudioLoaded = new BehaviorSubject(false);
   _ctx!: AudioContext;
   defaultSource!: AudioBuffer;
   nodes: Map<string, AudioNode> = new Map();
   recordings: Map<string, AudioBuffer> = new Map();
+  
   // not implemented yet... audioGraph: Map<string, ConnectionMap> = new Map();
   constructor() {}
   async decodeAudioData(arrayBuffer: ArrayBuffer): Promise<AudioBuffer> {
@@ -61,6 +61,7 @@ export class AudioService {
     return this._ctx;
   }
   testSound<T extends AudioNode>(tgt?: T) {
+    console.log(`testing sound`);
     this.defaultSource ??= this.addDefaultNoiseSource();
     let testNoise = this.ctx.createBufferSource();
     testNoise.buffer = this.defaultSource;
@@ -144,7 +145,7 @@ export class AudioService {
     }
     return true;
   }
-  setupContext(): boolean {
+  setupContext() {
     this._ctx = new AudioContext();
     if(!this._ctx) {
       throw new Error(`audio context not loaded`);
@@ -152,7 +153,10 @@ export class AudioService {
     if(this._ctx.state !== 'running') {
       console.warn(`audio context not running`);
     }
-    return this._ctx.state === 'running';
+    else {
+      this.isAudioLoaded.next(true);
+    }
+    return;
   }
   async asyncContext(): Promise<boolean> {
     this._ctx = new AudioContext();

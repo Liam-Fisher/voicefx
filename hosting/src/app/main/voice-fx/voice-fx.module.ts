@@ -5,10 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecordingUIComponent } from './recording-ui/recording-ui.component';
 import { VoiceFxPageComponent } from './voice-fx-page/voice-fx-page.component';
 import { RnboModule } from '../rnbo/rnbo.module';
+import { AudioOptionsComponent } from './audio-options/audio-options.component';
 @NgModule({
   declarations: [
     RecordingUIComponent,
-    VoiceFxPageComponent
+    VoiceFxPageComponent,
+    AudioOptionsComponent
   ],
   imports: [
     CommonModule,

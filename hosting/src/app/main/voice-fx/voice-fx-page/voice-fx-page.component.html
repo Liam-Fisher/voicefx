@@ -1,6 +1,15 @@
 
 <app-recording-ui></app-recording-ui>
-<section id="audio-options">
+<app-audio-options></app-audio-options>
+<app-device-menu-ui
+*ngIf="audioService.isAudioLoaded|async"
+[folder]="'voice-fx'"
+></app-device-menu-ui>
+<app-device-ui
+*ngIf="rnboService.isDeviceLoaded|async"
+></app-device-ui>
+
+<!-- <section id="audio-options">
   <button
     mat-button
     *ngIf="!(isAudioLoaded | async)"
@@ -18,18 +27,7 @@
     Test WebAudio
   </button>
 </section>
-
-<app-rnbo-device
-  #fxDevice
-  device_type="voice-fx"
-  [isAudioLoaded]="isAudioLoaded"
-  [deviceList]="deviceList"
-  [isDeviceLoaded]="isDeviceLoaded"
-  [deviceID]="deviceID"
-  [bufferIDs]="bufferIDs"
-></app-rnbo-device> 
-
-
+ -->
 <!--
 <div id="bufferSelectors" *ngIf="isDeviceLoaded | async">
   <div class="buffer-container" *ngFor="let buffer_id of bufferIDs | async">
