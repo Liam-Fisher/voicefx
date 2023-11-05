@@ -2,7 +2,7 @@
 
 import { ChangeDetectorRef, Component,ElementRef, ViewChild  } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AudioService } from 'src/app/services/audio.service';
+import { AudioService } from 'src/app/services/webAudio/audio.service';
 import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({

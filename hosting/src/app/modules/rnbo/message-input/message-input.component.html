@@ -1,0 +1,8 @@
+
+<select class="device-selection-menu-trigger" (change)="setInport($event)">
+    <option value="default">{{defaultText}}</option>
+    <option *ngFor="let inport_tag of rnboService.inports">
+        {{ inport_tag }}
+</option>
+</select>
+<input #message type="text" class="message-input" (change)="sendMsg($event)">

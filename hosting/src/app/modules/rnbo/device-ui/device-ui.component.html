@@ -1,0 +1,9 @@
+<div class="ui-container" 
+*ngFor="let uiName of rnboService.uiNames"
+[id]="uiName+'-ui'" 
+[title]="uiName"
+[ngStyle]="{
+    'padding.px': '10'
+}"
+>
+</div>

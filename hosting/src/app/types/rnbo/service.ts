@@ -1,3 +1,4 @@
+import { IPatcher } from "@rnbo/js";
 import { ConnectionMap } from "../rnboTypes";
 // Data (required), Message (some required), Options (none required)
 type BufferID = string | number;
@@ -10,5 +11,6 @@ export interface BufferLoadData {
 export interface DeviceLoadData {
     id: string,
     folder?: string,
+    patcher?: IPatcher
     connections?: ConnectionMap;
   }

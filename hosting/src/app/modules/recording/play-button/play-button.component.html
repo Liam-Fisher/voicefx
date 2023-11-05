@@ -1,0 +1,36 @@
+<audio #audioPlayer></audio>
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"
+(click)="beginPlayback()">
+<title>Play</title>
+<circle class="outline" />
+
+<polygon
+[ngClass]="(isReady | async) ? 'svg-play-element' : 'preload svg-play-element'"
+fill="#00A676"
+points="35,30 35,70 75,50"
+>
+</polygon>
+<circle 
+  #progressCircle
+  [ngClass]="(isPlaying | async) ? 
+  'progress-circle progress-circle-active' 
+  : 
+  'progress-circle'"
+  cx="50" cy="50" r="40" stroke="#ccc" stroke-width="8" fill="none" 
+  />
+  
+  
+  <!-- 
+  <circle
+  #progressCircle
+    cx="48"
+    cy="48"
+    r="40"
+    stroke="#0074d9"
+    stroke-width="8"
+    fill="none"
+    stroke-dasharray="251.2"
+    stroke-dashoffset="251.2"
+    id="progress-circle"
+  />  -->
+</svg>

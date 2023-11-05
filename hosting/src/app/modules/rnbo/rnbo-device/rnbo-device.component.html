@@ -1,0 +1,7 @@
+<app-device-selection-menu></app-device-selection-menu>
+<div class="device-inputs" *ngIf="rnboService.isDeviceLoaded | async">
+  <app-message-input></app-message-input>
+  <app-device-ui
+  class="device-ui-container"
+  ></app-device-ui>
+</div>

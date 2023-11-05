@@ -12,7 +12,9 @@ import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 
-import {VoiceFxModule}  from './main/voice-fx/voice-fx.module';
+//import {VoiceFxModule}  from './main/voice-fx/voice-fx.module';
+import { RecordingModule } from './modules/recording/recording.module';
+import { RnboModule } from './modules/rnbo/rnbo.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -28,8 +30,9 @@ import {VoiceFxModule}  from './main/voice-fx/voice-fx.module';
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     provideStorage(() => getStorage()),
-    //RnboModule,
-    VoiceFxModule
+    RnboModule,
+    //VoiceFxModule
+    RecordingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

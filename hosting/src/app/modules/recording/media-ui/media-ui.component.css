@@ -1,0 +1,32 @@
+.main-header {
+    text-align: center;
+    color: aliceblue;
+}
+.recording-ui {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+.recording-ui-loaded {
+    transition: all 0.5s ease-in-out;
+}
+
+.record-button-start {
+    width: fit-content;
+}
+.record-button-start {
+    left: 0%;
+    width: fit-content;
+}
+
+.play-button-disabled {
+    display: none;
+    width: fit-content;
+}
+.play-button-active {
+    display: flex;
+    opacity: 1;
+}
+

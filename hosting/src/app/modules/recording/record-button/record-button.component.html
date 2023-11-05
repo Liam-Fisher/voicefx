@@ -1,0 +1,42 @@
+
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="100"
+    height="100"
+    (click)="handleRecordClick($event)"
+  >
+  <title>Record</title>
+    <circle class="outline" />
+    <circle
+      [ngClass]="(isRecording | async) ? 'sound-wave active' : 'sound-wave'"
+    />
+    <rect
+      [ngClass]="
+        (isRecording | async)
+          ? 'record-button recording-button'
+          : 'record-button'
+      "
+    />
+  </svg>
+   
+<!-- 
+   <svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="100"
+   height="100"
+   (click)="handleRecordClick($event)"
+ >
+ <title>Record</title>
+   <circle class="outline" />
+   <circle
+     [class]="(mediaService.isRecording | async) ? 'sound-wave active' : 'sound-wave'"
+   />
+   <rect
+     [class]="
+       (mediaService.isRecording | async)
+         ? 'record-button recording-button'
+         : 'record-button'
+     "
+   />
+ </svg> -->
+ 

@@ -1,6 +1,0 @@
-<select class="device-selection-menu-trigger" (change)="selectDevice($event)">
-  <option value="default">--select a device---</option>
-  <option *ngFor="let device_id of deviceList | async">
-    {{ device_id }}
-  </option>
-</select>
