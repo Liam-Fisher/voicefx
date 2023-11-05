@@ -13,7 +13,6 @@ export class SelectUI extends EnumParameterUI<'umenu'> {
     createElement() {
     // the default mode 'relative' is always used
         this.element =  new Nexus.Select(this.elementId, { size: this.size, options: this.param.enumValues} );
-        this.linkElementToParam();
     }
     parseEvent({value, index}: {value: string, index: number}): number {
         return index;

@@ -4,6 +4,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { RnboService } from 'src/app/services/rnbo/rnbo.service';
 import { AudioService } from 'src/app/services/webAudio/audio.service';
 
 @Component({
@@ -22,7 +23,7 @@ export class PlayButtonComponent {
   isLoaded = new BehaviorSubject(false);
 
   //@Output() isLoaded = new EventEmitter<boolean>();
-  constructor(public audioService: AudioService) {}
+  constructor(public audioService: AudioService, public rnboService: RnboService) {}
   ngOnInit() {
     this.audioService.isAudioLoaded.subscribe((isLoaded) => {
       console.log(`isLoaded: ${isLoaded}`);
@@ -34,12 +35,16 @@ export class PlayButtonComponent {
   beginPlayback() {
     if (!this.isPlaying.value && this.audioService) {
       const playbackBuffer = this.audioService.bufferSource;
+      
       if (playbackBuffer) {
         console.log(
           `load bufferSource with duration of ${
             playbackBuffer?.buffer?.duration ?? 'unknown'
           }`
         );
+        if(this.rnboService.isDeviceLoaded.value) {
+          this.rnboService.connectToRecording();
+        }
         this.duration = playbackBuffer?.buffer?.duration ?? 0;
         this.progressCircle.nativeElement.style.setProperty(
           '--animation-duration',

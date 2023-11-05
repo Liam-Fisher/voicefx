@@ -1,0 +1,8 @@
+.media-ui-panel {
+    min-width: min-content;
+    max-width: 1000px;
+}
+.rnbo-device-ui {
+    display: flex;
+    flex-direction: column;
+}

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RecordButtonComponent } from './record-button/record-button.component';
 import { PlayButtonComponent } from './play-button/play-button.component';
 import { MediaUiComponent } from './media-ui/media-ui.component';
+import { LoadButtonComponent } from './load-button/load-button.component';
 
 
 
@@ -10,7 +11,8 @@ import { MediaUiComponent } from './media-ui/media-ui.component';
   declarations: [
     RecordButtonComponent,
     PlayButtonComponent,
-    MediaUiComponent
+    MediaUiComponent,
+    LoadButtonComponent
   ],
   imports: [
     CommonModule

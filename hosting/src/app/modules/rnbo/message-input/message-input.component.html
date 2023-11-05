@@ -1,8 +1,11 @@
 
-<select class="device-selection-menu-trigger" (change)="setInport($event)">
+<select #target class="device-input" (change)="setTarget($event)">
     <option value="default">{{defaultText}}</option>
-    <option *ngFor="let inport_tag of rnboService.inports">
-        {{ inport_tag }}
+    <option *ngFor="let uiName of rnboService.uiNames" [value]="uiName[1]" [ngStyle]="{'background-color': uiName[0] === 'list' ? '#cccccc': uiName[0] === 'enum' ? '#ababab': '#fefefe' } ">
+        {{ uiName[1] }}
 </option>
 </select>
-<input #message type="text" class="message-input" (change)="sendMsg($event)">
+<p>{{' => '}}</p>
+<input #message class="device-input"  type="text"  (change)="setData($event)" (keyup.enter)="sendMessage()" />
+
+

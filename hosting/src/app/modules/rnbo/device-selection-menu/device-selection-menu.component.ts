@@ -11,6 +11,7 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class DeviceSelectionMenuComponent {
   @Input() folder: string = 'voice-fx';
+  defaultText = new BehaviorSubject('select a device...');
   @ViewChild('rnbo_uploads') fileUpload!: ElementRef<HTMLInputElement>;
   selectedFile!: File;
   deviceList = new BehaviorSubject<string[]>([]);
@@ -37,6 +38,7 @@ ngOnInit() {
     fileUpload.click();
   }
   onFileSelected(event: any) {
+    this.defaultText.next('...loading');
     this.selectedFile = event.target.files[0] as File;
     const reader = new FileReader();
     reader.onload = () => {
@@ -44,7 +46,7 @@ ngOnInit() {
         const id = this.selectedFile.name.slice(0, -12);
         console.log(id);
         const patcher = JSON.parse(reader.result as string);
-        this.rnboService.loadDevice({id, patcher})
+        this.rnboService.loadDevice({id, patcher}).then(() => this.defaultText.next(id))
       } catch (error) {
         console.error('Error parsing JSON:', error);
       }

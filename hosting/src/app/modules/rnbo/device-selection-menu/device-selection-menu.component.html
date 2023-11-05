@@ -1,13 +1,13 @@
-<div class="rnbo-patcher-file-select">
-    <select class="device-selection-menu-trigger" (change)="selectDevice($event)">
-      <option value="default">select a device...</option>
+
+    <select class="device-selection-menu" (change)="selectDevice($event)">
+      <option value="default">{{(defaultText|async)}}</option>
       <option *ngFor="let device_id of deviceList | async">
         {{ device_id }}
       </option>
-      <option value="new">...upload device</option>
     </select>
-    <button class="upload-button" (click)="uploadPatcherFile()">...or upload your own</button>
+    
+    <button class="device-selection-menu" (click)="uploadPatcherFile()">...upload a device</button>
     <input #rnbo_uploads class="rnbo-file-upload-input" type="file" accept=".export.json" (change)="onFileSelected($event)" />
-  </div>
+
   
   

@@ -14,7 +14,6 @@ export default class DialUI extends NumberParameterUI<'dial'> {
     let {step, size} = this;
 // the default mode 'relative' is always used
     this.element =  new Nexus.Dial(this.elementId, { size, interaction, min, max, step, value} );
-    this.linkElementToParam();
   }
   parseEvent(v: number): number {
     return v;

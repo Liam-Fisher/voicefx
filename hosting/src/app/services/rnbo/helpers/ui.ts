@@ -18,7 +18,7 @@ export function initializeInportUIs() {
     if(!meta||(meta?.maxobj === 'textedit')) {
       continue;
     }
-    this.uiNames.push(name);
+    this.uiNames.push(['list', name]);
     switch(meta.maxobj) {
         case 'kslider':
           this.uiElements.push((new PianoUI(meta as InputAttributes<'List', 'kslider'>, name, this.device)));
@@ -43,8 +43,8 @@ export function initializeParameterUIs() {
    /*  if(this.uis.has(name)) {
       continue;
     } */
-    this.uiNames.push(name);
     if(desc.isEnum)  {
+      this.uiNames.push(['enum', name]);
       meta ??= {'maxobj': 'umenu'};
       console.log(`enum meta`, meta);
       console.log(`enum param`, param);
@@ -62,6 +62,7 @@ export function initializeParameterUIs() {
     }
     else {
       meta ??= {'maxobj': 'dial'};
+      this.uiNames.push(['number', name]);
       switch(meta.maxobj) {
         case 'dial':
           this.uiElements.push((new DialUI(meta as InputAttributes<'Number', 'dial'>, param as NumberParameter)));

@@ -2,7 +2,7 @@ import { BaseDevice, EnumParameter, MessageEvent, NumberParameter, Parameter } f
 import { InputType, UIType } from "../types/attributes";
 import { CustomRNBOInputMetadata } from "../types/dataTypes";
 import { defaultSizes } from "../helpers/styling";
-
+import {BehaviorSubject} from 'rxjs';
 
   export abstract class UIInput<T extends InputType, UI extends UIType<T>> {
     size!: [number, number];
@@ -15,6 +15,7 @@ import { defaultSizes } from "../helpers/styling";
     }
     abstract get name(): string;
     abstract createElement(): any;
+    abstract linkElementToInput(listener?: BehaviorSubject<[string, ...number[]]>): void;
     abstract parseEvent(v: any): number|number[];
     get elementPosition(): [number, number]| undefined  {
         if(!this.meta?.rect) return;
@@ -40,9 +41,12 @@ export abstract class InportUI<T extends 'List'|'Message', UI extends UIType<T>>
     }
     get name() { return this.tag; }
     get value() { return this.data; } 
-    linkElementToInport() {
+    linkElementToInput(listener?: BehaviorSubject<[string, ...number[]]>) {
         this.element.on('change', (v: any) => {
             this.data = this.parseEvent(v) as number[]; 
+            if(listener) {
+                listener.next([this.name, ...this.data]);
+            }
             if(this.sendOnChange) {
                 this.element.emit('send');
             }
@@ -73,12 +77,15 @@ export abstract class ParameterUI<T extends 'Number'|'Enum', UI extends UIType<T
     }
     get value(): number { return this.param.value }
     get numSteps(): number { return this.param?.steps ?? 0; }
-    linkElementToParam() {
+    linkElementToInput(listener?: BehaviorSubject<[string, ...number[]]>) {
         this.element.on('change', (v: any) => {
             const value = this.parseEvent(v) as number;
             console.log(`setting param ${this.param.name} to ${value}`);
             if(this.value !== value) {
                 this.param.value = value;
+                if(listener) {
+                    listener.next([this.name,this.value]);
+                }
             }
         });
     }

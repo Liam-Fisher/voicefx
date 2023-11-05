@@ -1,0 +1,12 @@
+
+@media only screen and (max-width: 600px) {
+    .device-input {
+        font-size: 12px;
+      }
+}
+
+@media only screen and (min-width: 601px) {
+    .device-input {
+    font-size: 16px;
+  }
+}

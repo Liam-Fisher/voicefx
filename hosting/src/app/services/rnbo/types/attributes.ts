@@ -52,17 +52,20 @@ export type InputAttributeMap = {
       message: TextStyle;
       kslider: {
         mode?: 0|1|2; //  'toggle' | 'button'
+        isPolyphonic?: boolean;
         offset?: number;
         range: number;
         hkeycolor?: [number, number, number, number];
         whitekeycolor?:[number, number, number, number];
         blackkeycolor?:[number, number, number, number];
+        sendOnChange?: boolean
       };
       function: {
         domain?: number
         range?: [number, number]
         linecolor?: [number, number, number, number];
         bgcolor?: [number, number, number, number];
+        sendOnChange?: boolean
       };
       pictslider: {
         jump: 0|1 // i.e. mode 'absolute'|'relative';

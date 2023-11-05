@@ -18,7 +18,6 @@ export default class EnvelopeUI extends ListInportUI<'function'> {
   }
   createElement() {
     this.element = new Nexus.Envelope(this.elementId, { size: this.size });
-    this.linkElementToInport();
   }
   toRange(y: number) {
     return (y - this.range[0]) * (this.range[1] - this.range[0]);

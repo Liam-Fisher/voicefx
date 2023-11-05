@@ -6,8 +6,14 @@ class="main-header"
 <section class="recording-ui">
 
     <app-record-button class="record-button-start"></app-record-button> 
+    <app-load-button
+    [ngClass]="(showAudioPlayer|async) ? 'button-active' : 'button-disabled'"
+    >
+
+</app-load-button>
     <app-play-button
-    [ngClass]="(showAudioPlayer|async) ? 'play-button-active' : 'play-button-disabled'"
+    [ngClass]="(showAudioPlayer|async) ? 'play-button-active' : 'button-disabled'"
     >
     </app-play-button>
+
 </section>

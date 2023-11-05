@@ -1,0 +1,18 @@
+/* .device-ui-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: center;
+    align-content: space-around;
+    justify-content: space-evenly;
+} */
+.device-ui-container {
+    display: block;    
+    width: 350px;
+        height: 700px;
+
+
+}
+.ui-container {
+    padding: 10px;
+}
+

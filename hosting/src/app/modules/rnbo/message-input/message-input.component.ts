@@ -1,36 +1,51 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { RnboService } from 'src/app/services/rnbo/rnbo.service';
 
-@Component({
+ @Component({
   selector: 'app-message-input',
   templateUrl: './message-input.component.html',
   styleUrls: ['./message-input.component.css'],
 })
 export class MessageInputComponent {
   defaultText = '----select an input----';
-  tag: string = '';
+  type?: string;
+  target: string = '';
+  
+  data: number[] = [];
+  @ViewChild('target') select!: ElementRef<HTMLSelectElement>;
   @ViewChild('message') element!: ElementRef<HTMLInputElement>;
 
-  data: number[] = [];
   constructor(public rnboService: RnboService) {}
-  ngAfterViewInit(): void {
-    this.setText('testinggggg')
+  ngOnInit() {
+    this.rnboService.activeTargetInput.subscribe(([target, ...data]: [string, ...number[]]) => {
+      console.log(`active target input: ${target} ${data}`);
+      if(target && data.length) {
+        this.select.nativeElement.value = target;
+        this.target = target;
+        this.element.nativeElement.value = data.join(' ');
+        this.data = data;
+      }
+  });
   }
-  sendMsg(evt: any) {
-    if (!this.tag) {
-      return;
-    }
-    this.data = this.parseEvent(evt);
-    if (!this.data.length) {
-      return;
-    }
-    this.rnboService.emitSyncEvent('message', [this.tag, this.data]);
-  }
-  setInport(evt: any) {
+  setTarget(evt: any) {
     let v = evt.target.value as string;
     if (v !== this.defaultText) {
-      this.tag = v;
+      this.target = v;
     }
+    console.log(`set input to ${this.target}`);
+  }
+  setData(evt: any) {
+    console.log('set data event');
+    this.data = this.parseEvent(evt);
+  }
+  sendMessage() {
+    
+    if (this.target === '----select an input----' || !this.data.length) {
+      return;
+    } 
+    this.rnboService.emitSyncEvent('message', [this.target, this.data])
+
   }
   parseEvent(evt: any): number[] {
     let str = evt.target.value as string;
@@ -40,8 +55,5 @@ export class MessageInputComponent {
     }
     return [];
   }
-  setText(text: string) {
-    this.element.nativeElement.value = text;
-  }
-  
 }
+ 

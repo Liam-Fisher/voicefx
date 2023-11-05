@@ -14,7 +14,6 @@ export default class NumberUI extends NumberParameterUI<'number'> {
     console.log({ size, min, max, step, value})
     this.element =  new Nexus.Number(this.elementId, { size, min, max, step, value} );
 
-    this.linkElementToParam();
   }
   parseEvent(v: number): number {
     return this.value;

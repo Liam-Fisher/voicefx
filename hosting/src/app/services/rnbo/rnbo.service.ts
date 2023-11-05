@@ -3,10 +3,7 @@ import * as RNBO from '@rnbo/js';
 import { AudioService } from '../webAudio/audio.service';
 import { DatabaseService } from '../database.service';
 
-import {
-  BufferLoadData,
-  DeviceLoadData
-} from '../../types/rnbo/service';
+import { BufferLoadData, DeviceLoadData } from '../../types/rnbo/service';
 import { SyncEventName, eventData } from '../../types/rnbo/events';
 import { BehaviorSubject } from 'rxjs';
 import DialUI from './inputs/elements/dial';
@@ -25,7 +22,14 @@ type Parameter = RNBO.IParameterDescription & Metadata;
 type MessageInport =  Metadata & {
   tag: string;
 }; */
-type UIClasses = DialUI|NumberUI|SliderUI|ToggleUI|SelectUI|PianoUI|EnvelopeUI;
+type UIClasses =
+  | DialUI
+  | NumberUI
+  | SliderUI
+  | ToggleUI
+  | SelectUI
+  | PianoUI
+  | EnvelopeUI;
 @Injectable({
   providedIn: 'root',
 })
@@ -47,25 +51,25 @@ export class RnboService {
   listInports: ListUIData[] = [];
 
   // use  <select> to set tag and <input> to set message
- // messageInports: MessageUIData[] = [];
+  // messageInports: MessageUIData[] = [];
   uiNames: string[] = [];
   uiElements: UIClasses[] = [];
   //uis: Map<string, UIClasses> = new Map();
   // messageInports: Set<string> = new Set();
   isUILoaded = new BehaviorSubject(false);
   isTouchDevice = new BehaviorSubject(false);
+  activeTargetInput = new BehaviorSubject<[string, ...number[]]>(['', 0]);
+  loadedBufferIDs = new BehaviorSubject([]);
+  loadIDIndex = 0;
   constructor(
     private webAudio: AudioService,
-    private db: DatabaseService
-  ) //private styling: StylingService
-  {
-    
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    private db: DatabaseService //private styling: StylingService
+  ) {
+    const isTouchDevice =
+      'ontouchstart' in window || navigator.maxTouchPoints > 0;
     console.log(`is Touch Device ${isTouchDevice}`);
   }
-  async getStyle() {
 
-  }
   async loadDeviceList(folder: string) {
     return this.db.listStorageNames(`rnbo_devices/${folder}`);
   }
@@ -84,7 +88,7 @@ export class RnboService {
     initializeInportUIs.call(this);
     console.log(`ui names`);
     console.log(this.uiNames);
-/*     this.uiElements.forEach((ui) => {
+    /*     this.uiElements.forEach((ui) => {
       console.log('logging meta');
       console.log(ui.meta);
     }); */
@@ -92,13 +96,14 @@ export class RnboService {
     this.isDeviceLoaded.next(true);
     return this.device;
   }
-  createUIElements()  {
-    for(let ui of this.uiElements) {
+  createUIElements() {
+    for (let ui of this.uiElements) {
       ui.createElement();
+      ui.linkElementToInput(this.activeTargetInput);
     }
   }
   emitSyncEvent(name: SyncEventName, data: eventData) {
-    console.log(`emitting event`);
+    console.log(`emitting ${name} event: ${data}`);
     try {
       let event = emit_sync_event(name, data);
       this.device.scheduleEvent(event);
@@ -106,9 +111,25 @@ export class RnboService {
       console.error(err);
     }
   }
+  connectToRecording() {
+    const deviceIDs = this?.bufferIDs;
+    if (this.isDeviceLoaded.value && deviceIDs.length) {
+      if (this.webAudio.isRecordingBufferLoaded.value) {
+        this.loadIDIndex %= deviceIDs.length;
+        const id = deviceIDs[this.loadIDIndex];
+        const src = this.webAudio.recordingBuffer;
+        try {
+          this.loadBuffer({ id, src }).then(() => this.loadIDIndex++);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }
   debugOutports() {
-    this.device.messageEvent.subscribe((evt) => console.log(`${evt.tag}: ${evt.payload} at ${evt.time}`));
-
+    this.device.messageEvent.subscribe((evt) =>
+      console.log(`${evt.tag}: ${evt.payload} at ${evt.time}`)
+    );
   }
   get context(): AudioContext {
     return this.webAudio.ctx;

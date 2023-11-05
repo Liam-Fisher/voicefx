@@ -15,7 +15,6 @@ export class ToggleUI extends EnumParameterUI<'toggle'> {
       size: this.size,
       state: this.value,
     });
-    this.linkElementToParam();
   }
   parseEvent(v: boolean): number {
     return +v;

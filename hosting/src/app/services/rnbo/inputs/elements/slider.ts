@@ -11,7 +11,6 @@ export default class SliderUI extends NumberParameterUI<'slider'> {
     let {min, max, value} = this.param;
     let {step, size} = this;
     this.element =  new Nexus.Slider(this.elementId, { size, mode, min, max, step, value} );
-    this.linkElementToParam();
   }
   parseEvent(v: number): number {
     return this.value;
