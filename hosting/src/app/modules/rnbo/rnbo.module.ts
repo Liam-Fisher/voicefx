@@ -5,6 +5,7 @@ import { MessageInputComponent } from './message-input/message-input.component';
 import { RnboDeviceComponent } from './rnbo-device/rnbo-device.component';
 import { DeviceUiComponent } from './device-ui/device-ui.component';
 import { PresetUiComponent } from './preset-ui/preset-ui.component';
+import { CustomDeviceUiComponent } from './custom-device-ui/custom-device-ui.component';
 
 
 
@@ -14,13 +15,15 @@ import { PresetUiComponent } from './preset-ui/preset-ui.component';
     MessageInputComponent,
     RnboDeviceComponent,
     DeviceUiComponent,
-    PresetUiComponent
+    PresetUiComponent,
+    CustomDeviceUiComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    RnboDeviceComponent
+    RnboDeviceComponent,
+    CustomDeviceUiComponent
   ]
 })
 export class RnboModule { }

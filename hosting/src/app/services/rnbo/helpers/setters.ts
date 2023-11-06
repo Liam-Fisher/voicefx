@@ -1,7 +1,21 @@
 import { IPatcher, createDevice } from '@rnbo/js';
 import { BufferLoadData, DeviceLoadData } from 'src/app/types/rnbo/service';
 import { getAudioBuffer, getBufferID } from './getters';
-
+export async function setDevicePreset(id: number) {
+  let name = this.presetNames[id];
+  let preset = this.presets[name];
+  if (!preset) return;
+  this.device.setPreset(preset);
+}
+export function setPresets() {
+  this.presets = {};
+  this.presetNames = [];
+  if(!this.patcher.presets) return;
+  for (let {name, preset} of this.patcher.presets) {
+    this.presets[name] = preset;
+  }
+  this.presetNames= Object.keys(this.presets);
+}
 export async function setDeviceBuffer(data: BufferLoadData): Promise<void> {
   let buffer_id: string;
   let buffer: AudioBuffer | ArrayBuffer;

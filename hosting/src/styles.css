@@ -4,7 +4,62 @@
 }
 body {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    min-width: 80%;
+    align-items: center;
+}
+.app-container {
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+}
+
+.media-ui-panel {
+    min-width: min-content;
+    max-width: 100%;
+}
+
+.rnbo-device-ui {
+    display: flex;
+    flex-direction: column;
+}
+.device-menu-container {
+    height: 100px;
+    min-width: min-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.device-message-input-container {
+    height: 100px;
+    min-width: min-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+h1 {
+    text-align: center;
+    color: aliceblue;
+}
+@media only screen and (max-width: 600px) {
+    .device-selection-menu {
+        font-size: 12px;
+      }
+    h1 {
+        font-size: 24px;
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    .device-selection-menu {
+    font-size: 26px;
+  }
+  h1 {
+      font-size: 36px;
+  }
 }

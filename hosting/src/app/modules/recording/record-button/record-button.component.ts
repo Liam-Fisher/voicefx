@@ -3,8 +3,6 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  HostListener,
-  Renderer2,
   Input,
   Output,
   EventEmitter,
@@ -25,7 +23,6 @@ export class RecordButtonComponent {
   pointerDown = new BehaviorSubject(false);
   isAudioFileUploadActive = new BehaviorSubject(false);
   isRecording = new BehaviorSubject(false);
-  //isRecording = false;
   isPlaying = new BehaviorSubject(false);
   mediaRecorder: MediaRecorder | null = null;
   audioChunks: Blob[] = [];

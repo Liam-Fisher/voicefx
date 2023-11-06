@@ -1,14 +1,17 @@
 <audio #audioPlayer></audio>
-<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"
+<svg 
+xmlns="http://www.w3.org/2000/svg"
+[attr.width]="size"
+[attr.height]="size"
 (click)="beginPlayback()">
 <title>Play</title>
+<g [attr.transform]="size===100 ? 'scale(1)' : 'scale(0.5)'">
 <circle class="outline" />
 
 <polygon
 [ngClass]="(isReady | async) ? 'play-triangle' : 'preload play-triangle'"
 fill="#00A676"
-points="35,30 35,70 75,50"
->
+points="35,30 35,70 75,50">
 </polygon>
 <circle 
   #progressCircle
@@ -16,8 +19,9 @@ points="35,30 35,70 75,50"
   'progress-circle progress-circle-active' 
   : 
   'progress-circle'"
-  cx="50" cy="50" r="40" stroke="#ccc" stroke-width="8" fill="none" 
+  cx="50" cy="50" r="40" stroke="#ccc" stroke-width="2" fill="none" 
   />
+  </g>
   
   
   <!-- 

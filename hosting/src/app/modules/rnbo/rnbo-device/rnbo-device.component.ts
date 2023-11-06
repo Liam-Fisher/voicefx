@@ -7,7 +7,8 @@ import { RnboService } from 'src/app/services/rnbo/rnbo.service';
   styleUrls: ['./rnbo-device.component.css']
 })
 export class RnboDeviceComponent {
-  createUIElements = false;
+  //createUIElements = false;
+  //style!: any;
   constructor(
       public rnboService: RnboService,
       public cdRef: ChangeDetectorRef
@@ -17,7 +18,6 @@ export class RnboDeviceComponent {
       console.log(`initialized device ui`);
       this.rnboService.isDeviceLoaded.subscribe((deviceLoaded: boolean) => {
           console.log(`device loaded: ${deviceLoaded}`);
-          this.rnboService.isTouchDevice.next('ontouchstart' in window || navigator.maxTouchPoints > 0);
           this.cdRef.detectChanges();
       });
       

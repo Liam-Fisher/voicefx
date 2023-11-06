@@ -1,9 +1,9 @@
 export const defaultSizes = {
     'dial': [100,100],
-    'number': [100,40],
-    'slider': [100,20],
-    'umenu': [150,20],
-    'toggle': [100,20],
+    'number': [80,30],
+    'slider': [120,20],
+    'umenu': [150,40],
+    'toggle': [40,20],
     'function': [200, 100],
-    'kslider': [350, 150]
+    'kslider': [350, 100]
 }

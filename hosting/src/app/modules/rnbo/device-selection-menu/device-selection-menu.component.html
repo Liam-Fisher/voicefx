@@ -6,7 +6,7 @@
       </option>
     </select>
     
-    <button class="device-selection-menu" (click)="uploadPatcherFile()">...upload a device</button>
+    <button *ngIf="(rnboService.debugMode|async)" (click)="uploadPatcherFile()">...upload a device</button>
     <input #rnbo_uploads class="rnbo-file-upload-input" type="file" accept=".export.json" (change)="onFileSelected($event)" />
 
   

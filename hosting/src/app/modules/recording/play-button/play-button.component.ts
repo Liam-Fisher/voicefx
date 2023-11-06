@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   ViewChild,
+  Input
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { RnboService } from 'src/app/services/rnbo/rnbo.service';
@@ -13,6 +14,7 @@ import { AudioService } from 'src/app/services/webAudio/audio.service';
   styleUrls: ['./play-button.component.css'],
 })
 export class PlayButtonComponent {
+  @Input() size: number = 100;
   @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
   @ViewChild('progressCircle') progressCircle!: ElementRef;
   /*  audioSrc =
@@ -25,7 +27,7 @@ export class PlayButtonComponent {
   //@Output() isLoaded = new EventEmitter<boolean>();
   constructor(public audioService: AudioService, public rnboService: RnboService) {}
   ngOnInit() {
-    this.audioService.isAudioLoaded.subscribe((isLoaded) => {
+    this.audioService.isAudioLoaded.subscribe((isLoaded: boolean) => {
       console.log(`isLoaded: ${isLoaded}`);
     });
   }

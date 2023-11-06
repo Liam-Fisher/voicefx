@@ -4,8 +4,9 @@
 p {
     color: white;
 }
-
-
+.no-upload {
+    display: none;
+}
 
 @media only screen and (max-width: 600px) {
     .device-selection-menu {

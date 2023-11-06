@@ -1,10 +1,8 @@
-<div
-class="device-ui-container">
+
 <div
 *ngFor="let uiName of rnboService.uiNames"
 [ngClass]="'ui-container'+' '+uiName[0]+' '+uiName[1]"
 [id]="uiName[1]+'-ui'" 
-[title]="uiName[0]+' '+uiName[1]"
+[title]="uiName[1]"
 >
-</div>
 </div>

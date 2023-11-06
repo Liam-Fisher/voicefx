@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as RNBO from '@rnbo/js';
+import * as RNBO from '@rnbo/js'
 import { AudioService } from '../webAudio/audio.service';
 import { DatabaseService } from '../database.service';
 
@@ -14,9 +14,10 @@ import { SelectUI } from './inputs/elements/select';
 import PianoUI from './inputs/elements/kslider';
 import EnvelopeUI from './inputs/elements/function';
 import { EnumUIData, ListUIData, NumberUIData } from './types/dataTypes';
-import { setDevice, setDeviceBuffer } from './helpers/setters';
+import { setDevice, setDeviceBuffer, setPresets } from './helpers/setters';
 import { initializeInportUIs, initializeParameterUIs } from './helpers/ui';
 import { emit_sync_event } from './helpers/eventEmitters';
+import { StylingService } from '../styling.service';
 /* type Metadata = {meta: Record<string, string>};
 type Parameter = RNBO.IParameterDescription & Metadata;
 type MessageInport =  Metadata & {
@@ -34,6 +35,9 @@ type UIClasses =
   providedIn: 'root',
 })
 export class RnboService {
+  // for debugging user devices
+  debugMode = new BehaviorSubject(false);
+
   deviceFolders = new BehaviorSubject<string[]>([]);
   deviceList = new BehaviorSubject<string[]>([]);
   patcher!: RNBO.IPatcher;
@@ -61,6 +65,10 @@ export class RnboService {
   activeTargetInput = new BehaviorSubject<[string, ...number[]]>(['', 0]);
   loadedBufferIDs = new BehaviorSubject([]);
   loadIDIndex = 0;
+
+  activeStyle: Record<string, any> = {};
+  presetNames: string[] = [];
+  presets!: Record<string, RNBO.IPreset>;
   constructor(
     private webAudio: AudioService,
     private db: DatabaseService //private styling: StylingService
@@ -79,10 +87,19 @@ export class RnboService {
   async loadBuffer(data: BufferLoadData) {
     await setDeviceBuffer.call(this, data);
   }
+  setDevicePreset(name: string) {
+    if(!this.device || !this.presets?.[name]) return false;
+    this.device.setPreset(this.presets[name]);
+    return true;
+  }
   async loadDevice(data: DeviceLoadData): Promise<RNBO.BaseDevice | null> {
     this.isDeviceLoaded.next(false);
     console.log(`loading device ${data.id}`);
     await setDevice.call(this, data);
+    setPresets.call(this);
+
+    // await loadStyle(data.id);
+    
     console.log(`loading uis`);
     initializeParameterUIs.call(this);
     initializeInportUIs.call(this);
@@ -101,6 +118,9 @@ export class RnboService {
       ui.createElement();
       ui.linkElementToInput(this.activeTargetInput);
     }
+    this.activeTargetInput.subscribe(([target, ...data]) => {
+      this.emitSyncEvent('message', [target, ...data]);
+    });
   }
   emitSyncEvent(name: SyncEventName, data: eventData) {
     console.log(`emitting ${name} event: ${data}`);
@@ -110,6 +130,11 @@ export class RnboService {
     } catch (err) {
       console.error(err);
     }
+  }
+  connectToPlayback(playbackButton: HTMLButtonElement) {
+    
+
+
   }
   connectToRecording() {
     const deviceIDs = this?.bufferIDs;

@@ -7,6 +7,7 @@ import { ListInportUI } from '../core';
 export default class EnvelopeUI extends ListInportUI<'function'> {
   domain: number;
   range: [number, number];
+  domainElement!: any;
   constructor(
     override meta: CustomRNBOInputMetadata<'List', 'function'>,
     tag: string,
@@ -17,7 +18,11 @@ export default class EnvelopeUI extends ListInportUI<'function'> {
     this.range = this.meta?.range ?? [0, 1];
   }
   createElement() {
-    this.element = new Nexus.Envelope(this.elementId, { size: this.size });
+
+    this.element = Nexus.Add.Envelope(this.elementId, { size: this.size });
+
+    
+    
   }
   toRange(y: number) {
     return (y - this.range[0]) * (this.range[1] - this.range[0]);
@@ -25,5 +30,8 @@ export default class EnvelopeUI extends ListInportUI<'function'> {
   // playChordByIndex
   parseEvent(points: { x: number; y: number }[]): number[] {
     return points.flatMap((p) => [p.x * this.domain, this.toRange(p.y)]);
+  }
+  resetData(): void {
+    
   }
 }

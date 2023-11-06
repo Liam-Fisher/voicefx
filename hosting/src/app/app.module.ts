@@ -10,7 +10,7 @@ import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { provideStorage,getStorage } from '@angular/fire/storage';
-import { environment } from '../environments/environment';
+import { environment } from '../environments/environments';
 
 //import {VoiceFxModule}  from './main/voice-fx/voice-fx.module';
 import { RecordingModule } from './modules/recording/recording.module';

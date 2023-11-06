@@ -5,15 +5,20 @@ class="main-header"
 >Say something...</h1>
 <section class="recording-ui">
 
-    <app-record-button class="record-button-start"></app-record-button> 
-    <app-load-button
+    <app-record-button 
+    [size]="styling.svgBoxSize"
+    class="record-button-start"></app-record-button> 
+
+   <app-load-button
+   [size]="styling.svgBoxSize"
     [ngClass]="(showAudioPlayer|async) ? 'button-active' : 'button-disabled'"
     >
 
-</app-load-button>
+</app-load-button> 
     <app-play-button
+    [size]="styling.svgBoxSize"
     [ngClass]="(showAudioPlayer|async) ? 'play-button-active' : 'button-disabled'"
     >
-    </app-play-button>
+    </app-play-button> 
 
 </section>

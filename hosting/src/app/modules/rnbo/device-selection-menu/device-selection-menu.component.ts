@@ -20,7 +20,12 @@ constructor(
   public rnboService: RnboService) { }
 ngOnInit() { 
    this.db.listStorageNames(`rnbo_devices/${this.folder}`)
-   .then((deviceList: string[]) => this.deviceList.next(deviceList))
+   .then((deviceList: string[]) => {
+    this.deviceList.next(deviceList);
+    console.log(deviceList)
+    const id= deviceList[0];
+    this.rnboService.loadDevice({id, folder: this.folder});
+  })
    .catch((error: Error) => console.log(error));
 }
   selectDevice(evt: any) {

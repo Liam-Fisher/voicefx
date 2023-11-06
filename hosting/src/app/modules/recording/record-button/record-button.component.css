@@ -1,26 +1,16 @@
 
 
-      .outline {
-        cx: 50;
-        cy: 50;
-        r: 30;
-        fill: none;
-        stroke: #e0e0e0;
-        stroke-width: 6;
-      }
-      /* recording-button.component.css */
       .record-button {
         width: 50%;
         height: 50%;
-        x: 25;
-        y: 25;
+        x: 25%;
+        y: 25%;
         rx: 100;
         fill: hsl(346, 82%, 59%); /* Your red circle color */
         transition: all 0.25s ease-in-out;
       }
       .record-button:hover {
-        
-        fill: hsl(346, 70%, 66%); /* Your red circle color */
+        fill: hsl(346, 82%, 72%); /* Your red circle color */
       } 
       .recording-button {
         width: 30%;
@@ -36,7 +26,7 @@
         r: 30%;
         fill: none;
         stroke: #e0e0e0;
-        stroke-width: 4;
+        stroke-width: 1;
         stroke-opacity: 1;
       }
 
@@ -46,12 +36,12 @@
       @keyframes soundWave {
         0% {
           r: 30%;
-          stroke-width: 4;
+          stroke-width: 2;
           stroke-opacity: 1;
         }
         100% {
           r: 20%;
-          stroke-width: 1;
+          stroke-width: 0.25;
           stroke-opacity: 0;
         }
 

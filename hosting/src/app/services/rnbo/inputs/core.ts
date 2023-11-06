@@ -40,23 +40,18 @@ export abstract class InportUI<T extends 'List'|'Message', UI extends UIType<T>>
         super(meta);
     }
     get name() { return this.tag; }
-    get value() { return this.data; } 
-    linkElementToInput(listener?: BehaviorSubject<[string, ...number[]]>) {
+    get value() { return this.data; }
+    abstract resetData(): void;
+    linkElementToInput(listener: BehaviorSubject<[string, ...number[]]>) {
         this.element.on('change', (v: any) => {
-            this.data = this.parseEvent(v) as number[]; 
-            if(listener) {
-                listener.next([this.name, ...this.data]);
-            }
-            if(this.sendOnChange) {
-                this.element.emit('send');
-            }
+            this.data = this.parseEvent(v) as number[];
         });
         this.element.on('send', () => {
             if((!this.tag)||!this.data.length) {
                 return;
             }
-            console.log(`${this.tag}: ${this.data.join(' ')}`);
-            this.device.scheduleEvent((new MessageEvent(0, this.tag, this.data)))
+            listener.next([this.tag, ...this.data]);
+            this.resetData();
         });
     }
 }

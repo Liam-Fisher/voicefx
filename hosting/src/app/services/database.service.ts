@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import {environment} from '../../environments/environments';
 import { Storage, ref,  uploadBytes, listAll,getDownloadURL, getBlob, getBytes, UploadTask, UploadResult } from '@angular/fire/storage';
 
 import { DemosDoc } from '../types/firestoreTypes';

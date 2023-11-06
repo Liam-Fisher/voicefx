@@ -10,13 +10,11 @@ export class DeviceUiComponent {
 constructor(public rnboService: RnboService) { }
 ngOnInit() { 
   
- console.log(`device ui on view init`);
 }
 
 
 ngAfterViewInit(): void {
  console.log(`device ui after view init`);
-  const containerStyle = testStyle.container;
   this.rnboService.createUIElements();
   
 }
