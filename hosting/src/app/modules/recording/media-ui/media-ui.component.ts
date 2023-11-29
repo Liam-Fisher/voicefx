@@ -9,6 +9,7 @@ import { AudioService } from 'src/app/services/webAudio/audio.service';
   styleUrls: ['./media-ui.component.css']
 })
 export class MediaUiComponent {
+    useTTSinput = new BehaviorSubject(true);
     showLoadButton = new BehaviorSubject(false);
     showAudioPlayer = new BehaviorSubject(false);
     constructor(
@@ -30,5 +31,9 @@ export class MediaUiComponent {
         this.showLoadButton.next(isLoaded&&this.audioService.isRecordingBufferLoaded.value);
         this.cdRef.detectChanges();
       });
+    }
+    changeInputMode(useTTS: boolean) {
+      this.useTTSinput.next(useTTS);
+      this.cdRef.detectChanges();
     }
 }

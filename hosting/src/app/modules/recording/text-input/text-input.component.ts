@@ -5,21 +5,7 @@ import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
 
 @Component({
   selector: 'app-text-input',
-  /* 
-  has language input
-  templateUrl: './text-input.component.html', */
-  template: `
-  <div id="text-input"> 
-<div [ngClass]="this.textData.errors?.['maxlength'] ? 'alert info' : 'info' ">Input text cannot be more than 64 characters.</div> 
-<input 
-  type="text"
-  class="text-input"
-  placeholder="Say something..."
-  [formControl]="textData"
-  />
-  <button id="sendButton" (click)="onSubmit()">Send</button>  
-</div>
-  `,
+  templateUrl: './text-input.component.html', 
   styleUrls: ['./text-input.component.css']
 })
 export class TextInputComponent {

@@ -27,7 +27,8 @@ import { LanguageInputComponent } from './language-input/language-input.componen
     PlayButtonComponent
    */
     MediaUiComponent,
-    TextInputComponent
+    TextInputComponent,
+    LanguageInputComponent
   ]
 })
 export class RecordingModule { 

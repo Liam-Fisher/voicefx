@@ -1,18 +1,24 @@
 
-
+<button 
+[ngClass]="(useTTSinput|async) ? 'mode-selected' : 'mode-unselected'+' mode-button'" 
+(click)="changeInputMode(true)">Text To Speech
+</button>
+<button 
+[ngClass]="((useTTSinput|async) ? 'mode-selected' : 'mode-unselected')+' mode-button'" 
+(click)="changeInputMode(false)">Microphone
+</button>
 <section class="recording-ui">
-
- <!--    <app-record-button 
+<app-record-button 
     [size]="styling.svgBoxSize"
     class="record-button-start"
+      [ngClass]="(useTTSinput|async) ? 'recording-ui-hidden' : 'record-ui-active'"
     ></app-record-button> 
-
- -->
-
     <app-play-button
     [size]="styling.svgBoxSize"
     [ngClass]="(showAudioPlayer|async) ? 'play-button-active' : 'button-disabled'"
     >
     </app-play-button> 
-<app-text-input></app-text-input>
+<app-text-input
+[ngClass]="(useTTSinput|async) ? 'recording-ui-active' : 'record-ui-hidden'"
+></app-text-input>
 </section>

@@ -1,13 +1,17 @@
-
-
+<app-language-input></app-language-input>
 <div id="text-input"> 
   <div [ngClass]="this.textData.errors?.['maxlength'] ? 'alert info' : 'info' ">Input text cannot be more than 64 characters.</div> 
-  <input 
+<!--   <input 
     type="text"
     class="text-input"
     placeholder="Say something..."
     [formControl]="textData"
-    />
+    /> -->
+    <textarea 
+    type="text"
+    class="text-input"
+    placeholder="Say something..."
+    [formControl]="textData" rows="2" cols="16"></textarea>
     <button id="sendButton" (click)="onSubmit()">Send</button>  
 </div>
 
