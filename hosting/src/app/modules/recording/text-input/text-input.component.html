@@ -1,0 +1,60 @@
+
+
+<div id="text-input"> 
+  <div [ngClass]="this.textData.errors?.['maxlength'] ? 'alert info' : 'info' ">Input text cannot be more than 64 characters.</div> 
+  <input 
+    type="text"
+    class="text-input"
+    placeholder="Say something..."
+    [formControl]="textData"
+    />
+    <button id="sendButton" (click)="onSubmit()">Send</button>  
+</div>
+
+
+<!-- <form 
+[formGroup]="ttsForm" 
+(ngSubmit)="onSubmit()">
+<div id="text-input"> 
+<div [ngClass]="text?.errors?.['maxlength'] ? 'alert info' : 'info' ">Input text cannot be more than 64 characters.</div> 
+<input 
+  type="text"
+  class="text-input"
+  formControlName="textInput"
+  placeholder="Say something..."
+  />
+  </div>
+<div id="language-input"> 
+    <div class="icon-container">
+        <img src="assets/google-translate-logo.svg">
+    </div>
+<select formControlName="language" class="language-selection">
+  <option value="en-US">English</option>
+  <option value="es-ES">Spanish</option>
+  <option value="zh-CN">Chinese</option>
+  <option value="fr-FR">French</option>
+  <option value="de-DE">German</option>
+  <option value="it-IT">Italian</option>
+  <option value="ja-JP">Japanese</option>
+  <option value="ko-KR">Korean</option>
+  <option value="pt-BR">Portuguese</option>
+  <option value="ru-RU">Russian</option>
+</select>
+<button
+      type="submit"
+      class="submit-button"
+      [disabled]="ttsForm.invalid"
+    >
+      Submit
+    </button>
+</div>
+</form>
+ -->
+
+ <!--  <div
+  *ngIf="text?.invalid && (text?.dirty || text?.touched)"
+  class="alert alert-danger"
+>
+  <div *ngIf="text?.errors?.['required']">Input text is required.</div>
+  <div *ngIf="text?.errors?.['minlength']">Input text be at least 2 characters.</div>
+  <div *ngIf="text?.errors?.['maxlength']">Input text cannot be more than 64 characters.</div> -->

@@ -13,4 +13,5 @@ export interface DeviceLoadData {
     folder?: string,
     patcher?: IPatcher
     connections?: ConnectionMap;
+    local?: boolean;
   }

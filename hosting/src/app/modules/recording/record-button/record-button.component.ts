@@ -8,7 +8,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { MediaService } from 'src/app/services/media/media.service';
+import { RnboService } from 'src/app/services/rnbo/rnbo.service';
 import { AudioService } from 'src/app/services/webAudio/audio.service';
 
 @Component({
@@ -34,7 +34,7 @@ export class RecordButtonComponent {
   @Output() recordedURL = new EventEmitter<string>();
   constructor(
     public audioService: AudioService,
-    public mediaService: MediaService,  
+    public rnboService: RnboService,  
     private cdRef: ChangeDetectorRef
   ) {}
   ngAfterViewInit() {
@@ -67,7 +67,8 @@ export class RecordButtonComponent {
     });
     this.audioChunks = [];
     this.cdRef.detectChanges();
-    this.audioService.encodeBlob(this.recordedAudio);
+    await this.audioService.encodeBlob(this.recordedAudio);
+    this.rnboService.connectToRecording();
   }
 recordAudioInput() {
     navigator.mediaDevices

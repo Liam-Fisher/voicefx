@@ -1,8 +1,10 @@
-.device-ui {
+
+.effect-select-container {
+        height: 100px;
+        min-width: min-content;
         display: flex;
-        flex-wrap: wrap;
         flex-direction: row;
-        align-content: flex-start;
-        justify-content: center;
         align-items: center;
+        justify-content: space-evenly;
 }
+

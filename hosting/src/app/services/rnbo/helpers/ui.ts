@@ -7,6 +7,7 @@ import { ToggleUI } from '../inputs/elements/toggle';
 import DialUI from '../inputs/elements/dial';
 import SliderUI from '../inputs/elements/slider';
 import NumberUI from '../inputs/elements/number';
+import TextButtonUI from '../inputs/elements/textbutton';
 
 export function initializeInportUIs() {
   for(let i=0; i<this.patcher.desc.inports.length; i++) {
@@ -19,7 +20,11 @@ export function initializeInportUIs() {
       continue;
     }
     this.uiNames.push(['list', name]);
+    
     switch(meta.maxobj) {
+        case 'textbutton':
+          this.uiElements.push((new TextButtonUI(meta as InputAttributes<'List', 'textbutton'>, name, this.device)));
+          break;
         case 'kslider':
           this.uiElements.push((new PianoUI(meta as InputAttributes<'List', 'kslider'>, name, this.device)));
           break;
@@ -35,9 +40,6 @@ export function initializeParameterUIs() {
   for(let i=0; i<this.patcher.desc.numParameters; i++) {
     let desc = this.patcher.desc.parameters[i];
     let meta = desc?.meta;
-    if(meta.messageOnly) {
-      continue;  
-    }
     let param = this.device.parameters[i];
     let name = param.name;
    /*  if(this.uis.has(name)) {

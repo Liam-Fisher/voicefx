@@ -35,13 +35,18 @@ export async function setDeviceBuffer(data: BufferLoadData): Promise<void> {
   }
 }
 
-export async function setPatcher(id: string, folder: string) {
-  let path = `rnbo_devices/${folder}/${id}.export`;
-  this.patcher = (await this.db.loadJSON(path)) as IPatcher;
+export async function setPatcher(data: DeviceLoadData) {
+  let { id, folder, patcher } = data;
+if(patcher) {
+  this.patcher = patcher;
+  return;
 }
+  let path = `rnbo_devices/${folder ?? 'voice-fx'}/${id}.export`;
+  this.patcher = await this.db.loadJSON(path) as IPatcher;
+}
+
 export async function setDevice(data: DeviceLoadData) {
-  let { id, folder, patcher, connections } = data;
-  this.patcher = patcher ?? (await this.db.loadJSON(`rnbo_devices/${folder}/${id}.export`)) as IPatcher;
+  let { id, connections } = data;
   try {
     this.device = await createDevice({
       context: this.context,

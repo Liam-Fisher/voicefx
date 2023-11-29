@@ -1,16 +1,11 @@
+
+<!-- 
 <app-device-selection-menu
   class="device-menu-container"
-></app-device-selection-menu>
-
-  <app-message-input
-    class="device-message-input-container"
-    *ngIf="(rnboService.isDeviceLoaded | async)&&(rnboService.debugMode|async)"
-    [ngClass]="'device-message-input-container'"
-  ></app-message-input>
-  <app-preset-ui
-    class="preset-ui"
-    *ngIf="rnboService.isDeviceLoaded | async">
-  </app-preset-ui>
+></app-device-selection-menu> -->
+<app-effect-select-ui
+class="effect-select-container"
+></app-effect-select-ui>
   <app-device-ui
     class="device-ui"
     *ngIf="rnboService.isDeviceLoaded | async"

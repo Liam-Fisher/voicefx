@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecordButtonComponent } from './record-button/record-button.component';
 import { PlayButtonComponent } from './play-button/play-button.component';
 import { MediaUiComponent } from './media-ui/media-ui.component';
-import { LoadButtonComponent } from './load-button/load-button.component';
+import { TextInputComponent } from './text-input/text-input.component';
+import { LanguageInputComponent } from './language-input/language-input.component';
 
 
 
@@ -12,16 +14,20 @@ import { LoadButtonComponent } from './load-button/load-button.component';
     RecordButtonComponent,
     PlayButtonComponent,
     MediaUiComponent,
-    LoadButtonComponent
+    TextInputComponent,
+    LanguageInputComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
   /*   RecordButtonComponent,
     PlayButtonComponent
    */
-    MediaUiComponent
+    MediaUiComponent,
+    TextInputComponent
   ]
 })
 export class RecordingModule { 

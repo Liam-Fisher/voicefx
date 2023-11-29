@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import testStyleA from '../modules/rnbo/styles/testStyleA';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +29,6 @@ export class StylingService {
   } 
   async loadStyle(id: string) {
     console.log(`loading style for ${id}`);
-    this.activeStyle = testStyleA;
 
   }
    

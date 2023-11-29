@@ -1,8 +1,15 @@
-
-<div
-*ngFor="let uiName of rnboService.uiNames"
-[ngClass]="'ui-container'+' '+uiName[0]+' '+uiName[1]"
-[id]="uiName[1]+'-ui'" 
-[title]="uiName[1]"
->
+<div [ngClass]="'device-ui-container' + ' ' + (rnboService.deviceID|async)+'-ui-container'">
+    <div *ngFor="let uiElement of rnboService.uiElements" 
+    [id]="uiElement.name+'-ui-panel'" [title]="uiElement.name"
+    [ngClass]="'device-ui-panel'+' '+uiElement.elementType+'-ui-panel'">
+        <div 
+        [id]="uiElement.name+'-ui'"
+        [ngClass]="'ui-element-container'+' '+uiElement.name+'-ui-element'">
+        <p 
+        [ngClass]="'ui-element-title '+uiElement.name+'-title'">
+            {{uiElement.name}}   
+        </p>        
+    </div>
+    </div> 
 </div>
+

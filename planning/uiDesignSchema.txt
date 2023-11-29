@@ -1,0 +1,8 @@
+design rnbo patch -> 
+given a set of ui elements, there are 3 ways to design an interface:
+    1. (Default)meta.uiLayout is undefined. uses flexbox and default element sizes
+    2. meta.uiLayout has the following properties: rows, columns, areas, which corespond to the CSS grid-template-* properties
+        the values in areas should be the name of parameters/inports
+    3. meta.uiLayout is an array of position/
+
+max object -> 

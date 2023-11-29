@@ -22,7 +22,9 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/assets/robot.svg",
+              "src/assets/google-translate-logo.svg"
             ],
             "styles": [
               "src/styles.css"
@@ -84,7 +86,8 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/assets/google-translate-logo.svg"
             ],
             "styles": [
               "src/styles.css"

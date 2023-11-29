@@ -1,14 +1,17 @@
 import { BaseDevice, EnumParameter, MessageEvent, NumberParameter, Parameter } from "@rnbo/js";
 import { InputType, UIType } from "../types/attributes";
 import { CustomRNBOInputMetadata } from "../types/dataTypes";
-import { defaultSizes } from "../helpers/styling";
+import { _getDefaultSize } from "../helpers/styling";
 import {BehaviorSubject} from 'rxjs';
 
   export abstract class UIInput<T extends InputType, UI extends UIType<T>> {
     size!: [number, number];
     element: any;
+    inputType!: 'inport'|'parameter';
+    elementType!: UI;
     constructor(public meta: CustomRNBOInputMetadata<T, UI>) {
-        this.elementSize = defaultSizes[this.meta.maxobj as keyof typeof defaultSizes] as [number, number];
+        this.elementSize = _getDefaultSize(this.meta.maxobj) as [number, number];
+        this.elementType = this.meta.maxobj as UI;
     }
     get elementId(): string {
       return `#${this.name}-ui`;
@@ -16,7 +19,6 @@ import {BehaviorSubject} from 'rxjs';
     abstract get name(): string;
     abstract createElement(): any;
     abstract linkElementToInput(listener?: BehaviorSubject<[string, ...number[]]>): void;
-    abstract parseEvent(v: any): number|number[];
     get elementPosition(): [number, number]| undefined  {
         if(!this.meta?.rect) return;
         return [this.meta.rect[0], this.meta.rect[1]];
@@ -38,22 +40,10 @@ export abstract class InportUI<T extends 'List'|'Message', UI extends UIType<T>>
     data: number[] = [];
     constructor(override meta: CustomRNBOInputMetadata<T, UI>, public tag: string, public device: BaseDevice) {
         super(meta);
+        this.inputType = 'inport';
     }
     get name() { return this.tag; }
     get value() { return this.data; }
-    abstract resetData(): void;
-    linkElementToInput(listener: BehaviorSubject<[string, ...number[]]>) {
-        this.element.on('change', (v: any) => {
-            this.data = this.parseEvent(v) as number[];
-        });
-        this.element.on('send', () => {
-            if((!this.tag)||!this.data.length) {
-                return;
-            }
-            listener.next([this.tag, ...this.data]);
-            this.resetData();
-        });
-    }
 }
 export abstract class ListInportUI<UI extends UIType<'List'>> extends InportUI<'List',UI> {
     constructor(override meta: CustomRNBOInputMetadata<'List', UI>, override tag: string, override device: BaseDevice) {
@@ -65,13 +55,14 @@ export abstract class ListInportUI<UI extends UIType<'List'>> extends InportUI<'
 export abstract class ParameterUI<T extends 'Number'|'Enum', UI extends UIType<T>> extends UIInput<T, UI> {
     constructor(override meta: CustomRNBOInputMetadata<T, UI>, public param: Parameter) {
         super(meta);
+        this.inputType = 'parameter';
     }
     get name() { 
-        console.log(`getting name ${this.param.name} from`, this.param);
         return this.param.name; 
     }
     get value(): number { return this.param.value }
     get numSteps(): number { return this.param?.steps ?? 0; }
+    abstract parseEvent(v: any): number; // whether or not to send the value, or wait for a secondary trigger
     linkElementToInput(listener?: BehaviorSubject<[string, ...number[]]>) {
         this.element.on('change', (v: any) => {
             const value = this.parseEvent(v) as number;

@@ -14,10 +14,9 @@ import { SelectUI } from './inputs/elements/select';
 import PianoUI from './inputs/elements/kslider';
 import EnvelopeUI from './inputs/elements/function';
 import { EnumUIData, ListUIData, NumberUIData } from './types/dataTypes';
-import { setDevice, setDeviceBuffer, setPresets } from './helpers/setters';
+import { setDevice, setDeviceBuffer, setPatcher, setPresets } from './helpers/setters';
 import { initializeInportUIs, initializeParameterUIs } from './helpers/ui';
 import { emit_sync_event } from './helpers/eventEmitters';
-import { StylingService } from '../styling.service';
 /* type Metadata = {meta: Record<string, string>};
 type Parameter = RNBO.IParameterDescription & Metadata;
 type MessageInport =  Metadata & {
@@ -38,15 +37,13 @@ export class RnboService {
   // for debugging user devices
   debugMode = new BehaviorSubject(false);
 
-  deviceFolders = new BehaviorSubject<string[]>([]);
-  deviceList = new BehaviorSubject<string[]>([]);
   patcher!: RNBO.IPatcher;
 
   // Active Device
   device!: RNBO.BaseDevice;
   isDeviceLoaded = new BehaviorSubject(false);
   deviceID = new BehaviorSubject<string>('');
-  //bufferIDs = new BehaviorSubject<string[]>([]);
+
   //  use dials
   numberParameters: NumberUIData[] = [];
   // use select menus
@@ -62,13 +59,16 @@ export class RnboService {
   // messageInports: Set<string> = new Set();
   isUILoaded = new BehaviorSubject(false);
   isTouchDevice = new BehaviorSubject(false);
-  activeTargetInput = new BehaviorSubject<[string, ...number[]]>(['', 0]);
+  inportInput = new BehaviorSubject<[string, ...number[]]>(['', 0]);
+  parameterInput = new BehaviorSubject<[string, ...number[]]>(['', 0]);
   loadedBufferIDs = new BehaviorSubject([]);
   loadIDIndex = 0;
 
   activeStyle: Record<string, any> = {};
   presetNames: string[] = [];
   presets!: Record<string, RNBO.IPreset>;
+  
+  currentSelection = new BehaviorSubject<string>('robot');
   constructor(
     private webAudio: AudioService,
     private db: DatabaseService //private styling: StylingService
@@ -78,12 +78,6 @@ export class RnboService {
     console.log(`is Touch Device ${isTouchDevice}`);
   }
 
-  async loadDeviceList(folder: string) {
-    return this.db.listStorageNames(`rnbo_devices/${folder}`);
-  }
-  async loadRecordingsList() {
-    return await this.db.listStorageNames(`media/userRecordings`);
-  }
   async loadBuffer(data: BufferLoadData) {
     await setDeviceBuffer.call(this, data);
   }
@@ -92,15 +86,16 @@ export class RnboService {
     this.device.setPreset(this.presets[name]);
     return true;
   }
-  async loadDevice(data: DeviceLoadData): Promise<RNBO.BaseDevice | null> {
+  
+  async loadDevice(data: DeviceLoadData): Promise<RNBO.BaseDevice> {
     this.isDeviceLoaded.next(false);
     console.log(`loading device ${data.id}`);
+    await setPatcher.call(this, data);
     await setDevice.call(this, data);
     setPresets.call(this);
-
-    // await loadStyle(data.id);
-    
     console.log(`loading uis`);
+    this.uiElements = [];
+    this.uiNames = [];
     initializeParameterUIs.call(this);
     initializeInportUIs.call(this);
     console.log(`ui names`);
@@ -109,21 +104,33 @@ export class RnboService {
       console.log('logging meta');
       console.log(ui.meta);
     }); */
-
+    this.deviceID.next(data.id);
     this.isDeviceLoaded.next(true);
+    this.debugOutports();
     return this.device;
   }
   createUIElements() {
     for (let ui of this.uiElements) {
       ui.createElement();
-      ui.linkElementToInput(this.activeTargetInput);
+      if(ui.inputType === 'inport') {
+        ui.linkElementToInput(this.inportInput);
+      }
+      else {
+        ui.linkElementToInput(this.parameterInput);
+      }
     }
-    this.activeTargetInput.subscribe(([target, ...data]) => {
+    this.inportInput.subscribe(([target, ...data]) => {
       this.emitSyncEvent('message', [target, ...data]);
+    });
+    
+    this.parameterInput.subscribe(([target, ...data]) => {
+      let param = this.device.parametersById.get(target);
+      if(param) {
+        param.value = data[0];
+      }
     });
   }
   emitSyncEvent(name: SyncEventName, data: eventData) {
-    console.log(`emitting ${name} event: ${data}`);
     try {
       let event = emit_sync_event(name, data);
       this.device.scheduleEvent(event);
@@ -131,25 +138,20 @@ export class RnboService {
       console.error(err);
     }
   }
-  connectToPlayback(playbackButton: HTMLButtonElement) {
-    
-
-
-  }
-  connectToRecording() {
-    const deviceIDs = this?.bufferIDs;
-    if (this.isDeviceLoaded.value && deviceIDs.length) {
-      if (this.webAudio.isRecordingBufferLoaded.value) {
-        this.loadIDIndex %= deviceIDs.length;
-        const id = deviceIDs[this.loadIDIndex];
-        const src = this.webAudio.recordingBuffer;
+  async connectToRecording() {
+    const ids = this?.bufferIDs;
         try {
-          this.loadBuffer({ id, src }).then(() => this.loadIDIndex++);
+          if(!ids?.length) {
+            throw new Error(`no buffer ids found`);
+          }
+          this.loadIDIndex %= ids.length;
+          const id = ids[this.loadIDIndex];
+          const src = this.webAudio.recordingBuffer;
+          console.log(`loaded into buffer id: ${id}`);
+          await this.loadBuffer({ id, src }).then(() => this.loadIDIndex++);
         } catch (e) {
           console.error(e);
         }
-      }
-    }
   }
   debugOutports() {
     this.device.messageEvent.subscribe((evt) =>
@@ -166,6 +168,22 @@ export class RnboService {
   }
   get inports(): string[] {
     return this.device?.inports.map((inport) => inport.tag) ?? [];
+  }
+  async audioForFile(path: string) {
+    console.log(`getting audio for file ${path}`);
+    const url = await this.db.getURL(path);
+    
+    console.log(`getting buffer at url ${url}`);
+    const ctx = this.webAudio.ctx;
+    const src = await RNBO.BaseDevice.fetchAudioData(url, ctx);
+    
+    console.log(`buffer duration ${src.duration}`);
+    this.webAudio.recordingBuffer = src;
+    this.webAudio.recordingDuration = src.duration;
+    this.webAudio.isRecordingBufferLoaded.next(true);
+    const id = this.bufferIDs[0];
+
+    await this.loadBuffer({ id, src });
   }
 }
 

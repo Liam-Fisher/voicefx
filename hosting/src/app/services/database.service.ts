@@ -52,4 +52,5 @@ uploadFile(file: File, path: string): Promise<UploadResult> {
   const storageRef = ref(this.storage, path);
   return uploadBytes(storageRef, file);
   }
+
 }

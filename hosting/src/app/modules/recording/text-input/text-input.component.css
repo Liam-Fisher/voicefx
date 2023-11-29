@@ -1,0 +1,39 @@
+#text-input {
+    height: 50%;
+    width: clamp(300px, 50%, 600px);
+}
+#text-input  > input {
+    color:aliceblue;
+    background-color: #00000000;
+    border-color:darkgray;
+    border: 1px solid;
+}
+#language-input {
+    height: 50%;
+    display: flex;
+    align-items: center;
+}
+.icon-container {
+    width: 1em;
+    height: 100%;
+    background-color:aliceblue;
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+}
+.icon-container > img {
+    width: 90%;
+    height: 90%;
+}
+button {
+    background-color: #00000000;
+    color: aliceblue;
+}
+.alert {
+    color: #f44336;
+    opacity:1.;
+}
+.info {
+    opacity: 0.;
+    font-size: 0.5em;
+}

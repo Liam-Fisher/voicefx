@@ -50,8 +50,12 @@ export type InputAttributeMap = {
     };
     List: {
       message: TextStyle;
+      textbutton: {
+        text?: string;
+        texton?: string;
+      };
       kslider: {
-        mode?: 0|1|2; //  'toggle' | 'button'
+        mode?: 'lead'|'chord'|'touch'; //  'toggle' | 'button'
         isPolyphonic?: boolean;
         offset?: number;
         range: number;
@@ -61,6 +65,8 @@ export type InputAttributeMap = {
         sendOnChange?: boolean
       };
       function: {
+        minDomain?: number
+        maxDomain?: number
         domain?: number
         range?: [number, number]
         linecolor?: [number, number, number, number];

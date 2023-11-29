@@ -2,7 +2,8 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  Input
+  Input,
+   ChangeDetectorRef
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { RnboService } from 'src/app/services/rnbo/rnbo.service';
@@ -25,7 +26,7 @@ export class PlayButtonComponent {
   isLoaded = new BehaviorSubject(false);
 
   //@Output() isLoaded = new EventEmitter<boolean>();
-  constructor(public audioService: AudioService, public rnboService: RnboService) {}
+  constructor(public audioService: AudioService, public rnboService: RnboService, private cdRef: ChangeDetectorRef) {}
   ngOnInit() {
     this.audioService.isAudioLoaded.subscribe((isLoaded: boolean) => {
       console.log(`isLoaded: ${isLoaded}`);
@@ -44,9 +45,6 @@ export class PlayButtonComponent {
             playbackBuffer?.buffer?.duration ?? 'unknown'
           }`
         );
-        if(this.rnboService.isDeviceLoaded.value) {
-          this.rnboService.connectToRecording();
-        }
         this.duration = playbackBuffer?.buffer?.duration ?? 0;
         this.progressCircle.nativeElement.style.setProperty(
           '--animation-duration',
@@ -61,6 +59,7 @@ export class PlayButtonComponent {
           );
           console.log( `completed playback `);
           this.isPlaying.next(false);
+          this.cdRef.detectChanges();
         };
       }
     }
