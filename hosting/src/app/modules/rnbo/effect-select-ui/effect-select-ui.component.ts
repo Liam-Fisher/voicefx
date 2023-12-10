@@ -37,14 +37,13 @@ export class EffectSelectUiComponent {
       "id": "loop",
       "emoji": "?",
       "folder": "voice-fx"
-    }
-    /* ,
+    },
     {
       "title": "alien",
       "id": "alien",
       "preset": "alien",
       "emoji": "👽"
-    } */
+    } 
   ];
   constructor(public rnboService: RnboService) { }
   

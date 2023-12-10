@@ -3,8 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 import {environment} from '../../environments/environment';
 import { Storage, ref,  uploadBytes, listAll,getDownloadURL, getBlob, getBytes, UploadTask, UploadResult } from '@angular/fire/storage';
 
-import { DemosDoc } from '../types/firestoreTypes';
-
 interface ScoreDoc {
 title: string;
 channelData: number[]
