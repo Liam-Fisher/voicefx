@@ -1,29 +1,27 @@
 #text-input {
     height: 50%;
     width: clamp(300px, 50%, 600px);
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "textbox translate" "textbox submit" "info .";
 }
-#text-input  > input {
-    color:aliceblue;
-    background-color: #00000000;
-    border-color:darkgray;
-    border: 1px solid;
+#text-input > textarea {
+    grid-area: textbox;
+}
+#text-input > .translate-button {
+    grid-area: translate;
+}
+#text-input > .translate-button {
+    grid-area: submit;
+}
+#text-input > p {
+    grid-area: info;
 }
 #language-input {
     height: 50%;
     display: flex;
     align-items: center;
-}
-.icon-container {
-    width: 1em;
-    height: 100%;
-    background-color:aliceblue;
-    display: flex;
-    justify-content: center;    
-    align-items: center;
-}
-.icon-container > img {
-    width: 90%;
-    height: 90%;
 }
 button {
     background-color: #00000000;
@@ -31,9 +29,5 @@ button {
 }
 .alert {
     color: #f44336;
-    opacity:1.;
-}
-.info {
-    opacity: 0.;
-    font-size: 0.5em;
+    opacity: 1.;
 }

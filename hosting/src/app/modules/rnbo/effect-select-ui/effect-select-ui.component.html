@@ -2,17 +2,11 @@
     replace with svg image icons??
  -->
 
-<!-- <button class="effect-button" *ngFor="let effect of effects" (click)="selectEffect(effect.id, effect.preset)" [title]="effect.title">
-    {{effect.emoji}}
-</button> -->
 
-
-  <button 
+<button 
   *ngFor="let effect of effects" [title]="effect.title"
   [ngClass]="(currentSelection|async) === effect.id ? 'selected-effect-icon' : 'effect-icon'"
   (click)="selectEffect(effect.id)">
-  <span class="shadow"></span>
-  <span class="edge"></span>
   <span class="front">
     {{effect.emoji}}
   </span>

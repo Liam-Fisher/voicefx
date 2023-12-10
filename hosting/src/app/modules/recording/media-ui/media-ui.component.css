@@ -1,45 +1,20 @@
-.main-header {
-    text-align: center;
-    color: aliceblue;
-}
-.media-ui {
-    background-color: black;
+.recording-mode-select {
+    width: 350px;
+    height: 50px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-direction: row;
+    align-items: center;
+    font-family: Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
 }
-.recording-ui-loaded {
+.ui-active {
+    position: absolute;
     opacity: 1;
     transition: all 0.5s ease-in-out;
 }
-.recording-ui-hidden {
+.ui-hidden {
+    position: absolute;
     opacity: 0;
     transition: all 0.5s ease-in-out;
 }
-.record-button-start {
-    left: 0%;
-    width: fit-content;
-}
 
-.button-disabled {
-    display: none;
-    width: fit-content;
-}
-.play-button-active {
-    display: flex;
-    opacity: 1;
-}
-
-.load-button-active {
-    display: flex;
-    opacity: 1;
-}
-.outline {
-    cx: 50;
-    cy: 50;
-    r: 30;
-    fill: none;
-    stroke: #e0e0e0;
-    stroke-width: 4;
-  }

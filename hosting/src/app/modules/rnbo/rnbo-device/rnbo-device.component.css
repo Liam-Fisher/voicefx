@@ -1,7 +1,4 @@
-
 .effect-select-container {
-        height: 100px;
-        min-width: min-content;
         display: flex;
         flex-direction: row;
         align-items: center;

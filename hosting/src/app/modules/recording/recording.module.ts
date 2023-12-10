@@ -6,6 +6,7 @@ import { PlayButtonComponent } from './play-button/play-button.component';
 import { MediaUiComponent } from './media-ui/media-ui.component';
 import { TextInputComponent } from './text-input/text-input.component';
 import { LanguageInputComponent } from './language-input/language-input.component';
+import { RecordingModeSelectComponent } from './recording-mode-select/recording-mode-select.component';
 
 
 
@@ -15,7 +16,8 @@ import { LanguageInputComponent } from './language-input/language-input.componen
     PlayButtonComponent,
     MediaUiComponent,
     TextInputComponent,
-    LanguageInputComponent
+    LanguageInputComponent,
+    RecordingModeSelectComponent
   ],
   imports: [
     CommonModule,

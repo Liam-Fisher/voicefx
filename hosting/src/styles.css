@@ -14,32 +14,33 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: clamp(400px, 80%, 800px);
+    width: clamp(360px, 80%, 800px);
 }
 
 .media-ui-panel {
     min-width: min-content;
     max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
 }
 
 .rnbo-device-ui {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 @media only screen and (max-width: 600px) {
-    .device-selection-menu {
-        font-size: 12px;
+    .media-ui-panel {
+        height: 50vw;
       }
-    h1 {
-        font-size: 24px;
-    }
+      
 }
 
 @media only screen and (min-width: 601px) {
-    .device-selection-menu {
-    font-size: 26px;
-  }
-  h1 {
-      font-size: 36px;
-  }
+    .media-ui-panel {
+        height: 360px;
+      }
+
 }
