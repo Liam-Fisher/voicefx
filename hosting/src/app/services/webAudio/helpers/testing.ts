@@ -1,13 +1,13 @@
 export function testSound<T extends AudioNode>(tgt?: T) {
-    console.log(`testing sound`);
+    //console.log(`testing sound`);
     this.defaultSource ??= createBoopBuffer.call(this);
     let testNoise = this.ctx.createBufferSource();
     testNoise.buffer = this.defaultSource;
     testNoise.connect(tgt ?? this.ctx.destination);
-    console.log(`beginning sound test`);
+    //console.log(`beginning sound test`);
     testNoise.start();
     testNoise.onended = () => {
-      console.log(`sound test complete`);
+      //console.log(`sound test complete`);
     };
   }
 

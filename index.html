@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>My Website</title>
+</head>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    h1 {
+        color: #00bfff;
+    }
+    p {
+        color: #00bfff;
+    }
+    .device-ui-panel {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .ui-element-container {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .ui-element-title {
+      color: aliceblue;
+      margin-top: 1px;
+      margin-bottom: 1px;
+      
+    }
+    .device-ui-container {
+        height: 50vh;
+        width: 400px;
+        display: grid;
+        grid-template-areas: 
+        "Header Header Header Header Loop On Warp Direction" "OscillatorNote OscillatorNote OscillatorNote OscillatorNote OscillatorNote OscillatorNote Blur Blur" "OscillatorOctave OscillatorOctave OscillatorOctave OscillatorOctave OscillatorWaveform OscillatorWaveform Blur Blur" "VibratoNote VibratoNote VibratoNote VibratoNote VibratoNote VibratoNote VibratoDepth VibratoDepth" "VibratoOctave VibratoOctave VibratoOctave VibratoOctave VibratoWaveform VibratoWaveform VibratoDepth VibratoDepth" "TremoloNote TremoloNote TremoloNote TremoloNote TremoloNote TremoloNote TremoloDepth TremoloDepth" "TremoloOctave TremoloOctave TremoloOctave TremoloOctave TremoloWaveform TremoloWaveform TremoloDepth TremoloDepth"; 
+        grid-template-columns: 1.25fr 1.25fr 1.25fr 1.25fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 2fr 3fr 1fr 3fr 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+    }
+    select {
+        display: flex;
+        align-self: center;
+    }
+    #Loop-ui-panel {
+        grid-area: Loop;
+    }
+    #On-ui-panel {
+        grid-area: On;
+    }
+    #Warp-ui-panel {
+        grid-area: Warp;
+    }
+    #Direction-ui-panel {
+        grid-area: Direction;
+    }
+    #OscillatorNote-ui-panel {
+        grid-area: OscillatorNote;
+    }
+    #OscillatorOctave-ui-panel {
+        grid-area: OscillatorOctave;
+    }
+    #OscillatorWaveform-ui-panel {
+        grid-area: OscillatorWaveform;
+    }
+    #Blur-ui-panel {
+        grid-area: Blur;
+    }
+    #VibratoNote-ui-panel {
+        grid-area: VibratoNote;
+    }
+    #VibratoOctave-ui-panel {
+        grid-area: VibratoOctave;
+    }
+    #VibratoWaveform-ui-panel {
+        grid-area: VibratoWaveform;
+    }
+    #VibratoDepth-ui-panel {
+        grid-area: VibratoDepth;
+    }
+    #TremoloNote-ui-panel {
+        grid-area: TremoloNote;
+    }
+    #TremoloOctave-ui-panel {
+        grid-area: TremoloOctave;
+    }
+    #TremoloWaveform-ui-panel {
+        grid-area: TremoloWaveform;
+    }
+    #TremoloDepth-ui-panel {
+        grid-area: TremoloDepth;
+    }
+    #device-ui-header {
+        grid-area: Header;
+    }
+
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/nexusui@latest/dist/NexusUI.js"></script>
+
+<body>
+    <div class="device-ui-container voicefx-ui-container">
+            <div id="device-ui-header">
+                <h4>VoiceFX Device UI</h4>
+            </div>
+            <div id="On-ui-panel" title="On" class="device-ui-panel toggle-ui-panel">
+                <p 
+                    class="ui-element-title On-title">
+                    &#9199;
+                    </p>   
+                <div id="On-ui" class="ui-element-container toggle-container On-ui-element">
+                       
+                </div>
+            </div>
+            <div id="Loop-ui-panel" title="Loop" class="device-ui-panel toggle-ui-panel">
+                <p 
+                class="ui-element-title Loop-title">
+                &#128258;
+                </p>  
+                <div id="Loop-ui" class="ui-element-container toggle-container Loop-ui-element">
+    
+                </div>
+            </div>
+            <div id="Warp-ui-panel" title="Warp" class="device-ui-panel toggle-ui-panel">
+                <p 
+                class="ui-element-title Warp-title">
+                &#128256;
+                </p>  
+                <div id="Warp-ui" class="ui-element-container toggle-container Warp-ui-element">
+                     
+                </div>
+            </div>
+            <div id="Direction-ui-panel" title="Direction" class="device-ui-panel toggle-ui-panel">
+                <p 
+                    class="ui-element-title Direction-title">
+                    &#9198;
+                    </p>      
+                <div id="Direction-ui" class="ui-element-container toggle-container Direction-ui-element">
+                    
+                </div>
+            </div>
+
+            <div id="OscillatorNote-ui-panel" title="OscillatorNote" class="device-ui-panel kslider-ui-panel">
+                <p 
+                class="ui-element-title OscillatorNote-title">
+                    Oscillator   
+                </p> 
+                <div id="OscillatorNote-ui" class="ui-element-container kslider-container OscillatorNote-ui-element">
+                        
+                </div>
+            </div>
+            <div id="OscillatorOctave-ui-panel" title="OscillatorOctave" class="device-ui-panel slider-ui-panel">
+             
+                <div id="OscillatorOctave-ui" class="ui-element-container slider-container OscillatorOctave-ui-element">
+                      
+                </div>
+            </div>
+            <div id="OscillatorWaveform-ui-panel" title="OscillatorWaveform" class="device-ui-panel umenu-ui-panel">
+           
+                <div id="OscillatorWaveform-ui" class="ui-element-container umenu-container OscillatorWaveform-ui-element">
+                       
+                </div>
+            </div>
+            <div id="Blur-ui-panel" title="Blur" class="device-ui-panel dial-ui-panel">
+                <div id="Blur-ui" class="ui-element-container dial-container Blur-ui-element">
+                      
+                </div>
+            </div>
+
+            <div id="TremoloNote-ui-panel" title="TremoloNote" class="device-ui-panel kslider-ui-panel">
+                <p 
+                class="ui-element-title TremoloNote-title">
+                Tremolo   
+                </p>  
+                <div id="TremoloNote-ui" class="ui-element-container kslider-container TremoloNote-ui-element">
+                       
+                </div>
+            </div>
+            <div id="TremoloOctave-ui-panel" title="TremoloOctave" class="device-ui-panel slider-ui-panel">
+                <div id="TremoloOctave-ui" class="ui-element-container slider-container TremoloOctave-ui-element">
+          
+                </div>
+            </div>
+            <div id="TremoloWaveform-ui-panel" title="TremoloWaveform" class="device-ui-panel umenu-ui-panel">
+                <div id="TremoloWaveform-ui" class="ui-element-container umenu-container TremoloWaveform-ui-element">
+                    
+                </div>
+            </div>
+            <div id="TremoloDepth-ui-panel" title="Blur" class="device-ui-panel dial-ui-panel">
+                <div id="TremoloDepth-ui" class="ui-element-container dial-container TremoloDepth-ui-element">
+                     
+                </div>
+            </div>
+
+
+            <div id="VibratoNote-ui-panel" title="VibratoNote" class="device-ui-panel kslider-ui-panel">
+                
+                <p 
+                class="ui-element-title VibratoNote-title">
+                Vibrato   
+                </p>  <div id="VibratoNote-ui" class="ui-element-container kslider-container VibratoNote-ui-element">
+                       
+                </div>
+            </div>
+            <div id="VibratoOctave-ui-panel" title="VibratoOctave" class="device-ui-panel slider-ui-panel">
+                <div id="VibratoOctave-ui" class="ui-element-container slider-container VibratoOctave-ui-element">
+                       
+                </div>
+            </div>
+            <div id="VibratoWaveform-ui-panel" title="VibratoWaveform" class="device-ui-panel umenu-ui-panel">
+                <div id="VibratoWaveform-ui" class="ui-element-container umenu-container VibratoWaveform-ui-element">
+                    
+                </div>
+            </div>
+            <div id="VibratoDepth-ui-panel" title="VibratoDepth" class="device-ui-panel dial-ui-panel">
+                <div id="VibratoDepth-ui" class="ui-element-container dial-container VibratoDepth-ui-element">
+                      
+                </div>
+            </div>
+
+
+
+
+
+    </div>
+    <script>
+        var Dial = {'size': [80,80]};
+        var NumberBox = {'size': [60,20]};
+        var Toggle = {'size': [40,20]};
+        var Slider = {'size': [180, 30]};
+        var Select = {'size': [80,20]};
+
+
+        var OnToggle = Nexus.Add.Toggle('#On-ui',Toggle);
+        var WarpToggle = Nexus.Add.Toggle('#Warp-ui',Toggle);
+        var DirectionToggle = Nexus.Add.Toggle('#Direction-ui',Toggle);
+        var LoopToggle = Nexus.Add.Toggle('#Loop-ui',Toggle);
+
+        
+        var OscillatorKeyboard = Nexus.Add.Piano('#OscillatorNote-ui',{'size': [300,80]});
+        var OscillatorSlider = Nexus.Add.Slider('#OscillatorOctave-ui',Slider);
+        var OscillatorUmenu = Nexus.Add.Select('#OscillatorWaveform-ui',Select);
+        var OscillatorDial = Nexus.Add.Dial('#Blur-ui', Dial);
+        var OscillatorNumber = Nexus.Add.Number('#Blur-ui', NumberBox);
+        
+        var VibratoKeyboard = Nexus.Add.Piano('#VibratoNote-ui',{'size': [300,80]});
+        var VibratoSlider = Nexus.Add.Slider('#VibratoOctave-ui',Slider);
+        var VibratoUmenu = Nexus.Add.Select('#VibratoWaveform-ui',Select);
+        var VibratoDial = Nexus.Add.Dial('#VibratoDepth-ui', Dial);
+        var VibratoNumber = Nexus.Add.Number('#VibratoDepth-ui', NumberBox);
+        
+        var TremoloKeyboard = Nexus.Add.Piano('#TremoloNote-ui',{'size': [300,80]});
+        var TremoloSlider = Nexus.Add.Slider('#TremoloOctave-ui',Slider);
+        var TremoloUmenu = Nexus.Add.Select('#TremoloWaveform-ui',Select);
+        var TremoloDial = Nexus.Add.Dial('#TremoloDepth-ui', Dial);
+        var TremoloNumber = Nexus.Add.Number('#TremoloDepth-ui', NumberBox);
+        
+    </script>
+</body>
+</html>

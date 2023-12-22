@@ -5,17 +5,17 @@ class="recording-mode-select"
 ></app-recording-mode-select>
 <div class="ui-container">
 <app-text-input
-[ngClass]="(useTTSinput|async) ? 'ui-active' : 'ui-hidden'"
+[ngClass]="(useTTSinput|async) ? 'ui-active ui' : 'ui-hidden ui'"
 ></app-text-input>
 <app-record-button 
     [size]="styling.svgBoxSize"
-    [ngClass]="(useTTSinput|async) ? 'ui-hidden' : 'ui-active'"
+    [ngClass]="(useTTSinput|async) ? 'ui-hidden ui' : 'ui-active ui'"
     ></app-record-button> 
 </div>
 <div class="ui-container">
 <app-play-button
-    [size]="styling.svgBoxSize"
-    [ngClass]="(showAudioPlayer|async) ? 'ui-active' : 'ui-hidden'"
-    >
-    </app-play-button> 
+[size]="styling.svgBoxSize"
+[ngClass]="(showAudioPlayer|async) ? 'ui-active ui' : 'ui-hidden ui'"
+>
+</app-play-button> 
 </div>

@@ -24,7 +24,8 @@ export function drawPlayButton(nativeSvg: HTMLOrSVGElement, offset_x: number, of
     addSvgAttrs.call(this, element, drawEqTriangle(offset_x,offset_y,size,'green'));
     element.addEventListener('pointerdown', this.printLabel);
     this.renderer.appendChild(nativeSvg, element);
-}/* 
+}
+/* 
 function getLine(x, y) {
 return `L${(parseInt(x))} ${(parseInt(y))}`;
 }
@@ -33,9 +34,9 @@ const {top, left, shaftWidth, shaftHeight, arrowWidth, arrowHeight }
 = arrow;
    let flareWidth = (arrowWidth-shaftWidth)/2;
    let centerX = left+shaftWidth/2;
-   console.log(`centerX: ${centerX}`);
+   //console.log(`centerX: ${centerX}`);
    let bottomY = top+arrowHeight+shaftHeight;
-   console.log(`bottomY: ${bottomY}`);
+   //console.log(`bottomY: ${bottomY}`);
         let pointArray = [
        `M${parseInt(left)} ${parseInt(top)}`,
      getLine(left, top+shaftHeight),
@@ -47,7 +48,7 @@ const {top, left, shaftWidth, shaftHeight, arrowWidth, arrowHeight }
      getLine(left, top),
      
 ];
-        console.log(pointArray.join(' '));
+        //console.log(pointArray.join(' '));
    const svgPath = document.getElementById('path');
    svgPath.setAttribute('d', pointArray.join(' '));
 

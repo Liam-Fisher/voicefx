@@ -18,7 +18,7 @@ export class StylingService {
   defaultDeviceUI: Record<string, any> = {}
   activeStyle: Record<string, any> = {};
 
-
+  isHandset!: boolean;
   paramData: Record<string, any[]> = {};  
   uiData: Record<string, any[]> = {};
   // Device queries
@@ -26,25 +26,34 @@ export class StylingService {
   //deviceUIwidth = new BehaviorSubject<number>(window.innerWidth);
   constructor() {
     this.hasMouse = window.matchMedia("(pointer: fine)").matches;
+    this.isHandset = window.matchMedia("(max-width: 600px)").matches;
   } 
   async loadStyle(id: string) {
-    console.log(`loading style for ${id}`);
+    //console.log(`loading style for ${id}`);
 
   }
-   
+   get iconSize(): number {
+    if(this.isHandset) {
+      return 16;
+    }
+    else {
+      return 24;
+    }
+    
+  }
   get svgBoxSize(): number {
-    if(window.innerWidth < 600) {
+    if(this.isHandset) {
       return 50;
     }
     else {
       return 100;
     }
-      
   }
+
   paramLogger() {
     for(let key in this.paramData) {
-      console.log(`${key} items: ${this.paramData[key].length}`);
-      console.log(`${key} names: ${this.paramData[key].map(p => p.name).join()}`);
+      //console.log(`${key} items: ${this.paramData[key].length}`);
+      //console.log(`${key} names: ${this.paramData[key].map(p => p.name).join()}`);
     }
   }
 calculateStringPixels(container: HTMLElement, stringLength: number): number {

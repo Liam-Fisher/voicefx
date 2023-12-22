@@ -1,10 +1,13 @@
 
 <button class="icon-button" (click)="languageSelectionDialog.showModal()">
-  <p>Translate</p><!-- 
+Translate Text&nbsp;
+ 
+ 
+ <!-- 
     <img src="assets/google-translate-logo.svg" id="languageSelectionIcon"> -->
-    <svg fill="#000000" height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+    <svg fill="#000000" [attr.height]="styling.iconSize+'px'" [attr.width]="styling.iconSize+'px'" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
     viewBox="0 0 228.403 228.403" xml:space="preserve">
- <path d="M215.428,73.112h-79.797l-12.998-56.41H12.977C5.821,16.701,0,22.523,0,29.678v112.637c0,7.155,5.821,12.977,12.977,12.977
+ <path fill="#FFFFFF" d="M215.428,73.112h-79.797l-12.998-56.41H12.977C5.821,16.701,0,22.523,0,29.678v112.637c0,7.155,5.821,12.977,12.977,12.977
    h79.794l12.999,56.41h109.659c7.154,0,12.975-5.821,12.975-12.977V86.088C228.403,78.933,222.583,73.112,215.428,73.112z
     M15,140.291V31.701h95.696l25.022,108.59H15z M108.164,155.291h28.195l-21.134,30.643L108.164,155.291z M213.403,196.701H126.02
    l16.195-23.481l2.458,4.004c9.801-6.018,17.538-13.048,23.646-20.203l18.985,19.366l7.856-7.701l-20.103-20.506
@@ -21,7 +24,7 @@
   <div class="dialog-header">
     <h2>Translate into:</h2>
   </div>
-<select #languageMenu class="language-selection">
+<select #languageMenu class="language-selection" (change)="handleLanguageChange($event)">
     <option value="ar-XA">
       Arabic (Arabic)
     </option>

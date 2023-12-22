@@ -1,6 +1,7 @@
 import { IPatcher, createDevice } from '@rnbo/js';
 import { BufferLoadData, DeviceLoadData } from 'src/app/types/rnbo/service';
 import { getAudioBuffer, getBufferID } from './getters';
+import { ParameterUI } from '../inputs/core';
 export async function setDevicePreset(id: number) {
   let name = this.presetNames[id];
   let preset = this.presets[name];
@@ -9,12 +10,11 @@ export async function setDevicePreset(id: number) {
 }
 export function setPresets() {
   this.presets = {};
-  this.presetNames = [];
   if(!this.patcher.presets) return;
   for (let {name, preset} of this.patcher.presets) {
     this.presets[name] = preset;
   }
-  this.presetNames= Object.keys(this.presets);
+  this.presetNames.next(Object.keys(this.presets));
 }
 export async function setDeviceBuffer(data: BufferLoadData): Promise<void> {
   let buffer_id: string;
@@ -57,4 +57,18 @@ export async function setDevice(data: DeviceLoadData) {
     throw err;
   }
   
+}
+export function setPreset(name: string) {
+  const activePreset = this.presets[name];
+  //console.log( `setting preset ${name}`);
+  //console.log(activePreset);
+  this.device.setPreset(activePreset);
+  for(let parameterName in activePreset) {
+    let element = this.uiElements.get(parameterName);
+    if(element instanceof ParameterUI) {
+    //console.log( `setting parameter ${parameterName}`, activePreset[parameterName]);
+    let value = activePreset[parameterName] as {value: number}; // this is a hack to get around the fact that the preset type is not exported
+    element?.updateElement(value?.value);
+  }
+}
 }

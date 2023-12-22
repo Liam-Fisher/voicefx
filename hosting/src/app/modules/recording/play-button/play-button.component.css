@@ -1,4 +1,10 @@
 
+p {
+  display: flex;
+  justify-content: center;
+  width: 150px;
+  color: hsl(163, 100%, 33%);;
+}
 .outline {
   cx: 50;
   cy: 50;
@@ -38,4 +44,3 @@
 .progress-circle-active {
   stroke-dashoffset: 0;
 }
-

@@ -21,13 +21,15 @@ export class MediaUiComponent {
       // BAD RXJS :(
         // fix later
       this.audioService.isRecordingBufferLoaded.subscribe((isLoaded: boolean) => {
-        console.log(`isLoaded: ${isLoaded}`);
+        if(this.showLoadButton.value) return; 
+        ////console.log(`isLoaded: ${isLoaded}`);
         this.showAudioPlayer.next(isLoaded);  
         this.showLoadButton.next(isLoaded&&this.rnboService.isDeviceLoaded.value);
         this.cdRef.detectChanges();
       });
       this.rnboService.isDeviceLoaded.subscribe((isLoaded: boolean) => {
-        console.log(`isLoaded: ${isLoaded}`);
+        if(this.showLoadButton.value) return; 
+        ////console.log(`isLoaded: ${isLoaded}`);
         this.showLoadButton.next(isLoaded&&this.audioService.isRecordingBufferLoaded.value);
         this.cdRef.detectChanges();
       });

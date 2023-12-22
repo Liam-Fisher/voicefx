@@ -22,13 +22,13 @@ export class RnboDeviceComponent {
       ) {
    }
   ngOnInit() {
-      console.log(`initialized device ui`);
-      this.rnboService.isDeviceLoaded.subscribe((deviceLoaded: boolean) => {
-          console.log(`device loaded: ${deviceLoaded}`);
-          if(this.audioService.isRecordingBufferLoaded.value) {
-            this.rnboService.connectToRecording();
-          }
+    this.audioService.isRecordingBufferLoaded.subscribe((isLoaded: boolean) => {
+      //console.log( `loading device: ${isLoaded}` );
+      if(isLoaded) {
+        this.rnboService.loadDevice({id: 'voiceFX_presets', folder: 'voice-fx'}).then(() => {
           this.cdRef.detectChanges();
-      });
+        });
+      }
+    });
   }
 }

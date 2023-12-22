@@ -5,7 +5,7 @@ import { RnboService } from 'src/app/services/rnbo/rnbo.service';
 @Component({
   selector: 'app-device-ui',
   templateUrl: './device-ui.component.html',
-  styleUrls: ['./device-ui.component.css']
+  styleUrls: ['./styles/container.css', './styles/panels.css', "./styles/elements.css"]
 })
 export class DeviceUiComponent {
 
@@ -16,7 +16,7 @@ ngOnInit() {
 
 
 ngAfterViewInit(): void {
- console.log(`device ui after view init`);
+ //console.log(`device ui after view init`);
   this.rnboService.createUIElements();
 }
 

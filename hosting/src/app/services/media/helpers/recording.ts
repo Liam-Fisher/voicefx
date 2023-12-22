@@ -10,7 +10,7 @@ export async function recordAudioInput() {
     };
     
     this.mediaRecorder.onstop = () => {
-          console.log('recording stopped');
+          //console.log('recording stopped');
           this.recordedAudio = new Blob(this.audioChunks, { type: 'audio/wav' });
           this.audioChunks = [];
           this.isRecordingActive.next(false);

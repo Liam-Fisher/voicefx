@@ -5,4 +5,15 @@ given a set of ui elements, there are 3 ways to design an interface:
         the values in areas should be the name of parameters/inports
     3. meta.uiLayout is an array of position/
 
-max object -> 
+
+grid rows should be responsive on desktop
+
+use arrow for preset indicator on desktop
+use highlight for active preset indicator on mobile
+
+add text for toggles
+
+format preset buttons
+
+add hover, 
+add svg highlighting the selected preset

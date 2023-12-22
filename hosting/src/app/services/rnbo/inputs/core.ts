@@ -10,6 +10,7 @@ import {BehaviorSubject} from 'rxjs';
     inputType!: 'inport'|'parameter';
     elementType!: UI;
     constructor(public meta: CustomRNBOInputMetadata<T, UI>) {
+        
         this.elementSize = _getDefaultSize(this.meta.maxobj) as [number, number];
         this.elementType = this.meta.maxobj as UI;
     }
@@ -44,6 +45,7 @@ export abstract class InportUI<T extends 'List'|'Message', UI extends UIType<T>>
     }
     get name() { return this.tag; }
     get value() { return this.data; }
+    set value(v: number[]) { this.data = v; }
 }
 export abstract class ListInportUI<UI extends UIType<'List'>> extends InportUI<'List',UI> {
     constructor(override meta: CustomRNBOInputMetadata<'List', UI>, override tag: string, override device: BaseDevice) {
@@ -62,28 +64,26 @@ export abstract class ParameterUI<T extends 'Number'|'Enum', UI extends UIType<T
     }
     get value(): number { return this.param.value }
     get numSteps(): number { return this.param?.steps ?? 0; }
+    abstract updateElement(value:number|number[]): void; // update the element with the current value
     abstract parseEvent(v: any): number; // whether or not to send the value, or wait for a secondary trigger
     linkElementToInput(listener?: BehaviorSubject<[string, ...number[]]>) {
         this.element.on('change', (v: any) => {
             const value = this.parseEvent(v) as number;
-            console.log(`setting param ${this.param.name} to ${value}`);
+
             if(this.value !== value) {
                 this.param.value = value;
-                if(listener) {
-                    listener.next([this.name,this.value]);
-                }
             }
         });
     }
 }
-export abstract class EnumParameterUI<UI extends UIType<'Enum'>> extends ParameterUI<'Enum',UI> {
+export abstract class EnumParameterUI<UI extends UIType<'Enum'>> extends ParameterUI<'Enum', UI> {
     stringEnum: boolean;
     constructor(override meta: CustomRNBOInputMetadata<'Enum', UI>, override param: EnumParameter) {
         super(meta, param);
         this.stringEnum = this.param.enumValues.every(el => typeof el === 'string');
     }
 }
-export abstract class NumberParameterUI<UI extends UIType<'Number'>> extends ParameterUI<'Number',UI> {
+export abstract class NumberParameterUI<UI extends UIType<'Number'>> extends ParameterUI<'Number', UI> {
     isNormalized: boolean = false;
     constructor(override meta: CustomRNBOInputMetadata<'Number', UI>, override param: NumberParameter) {
         super(meta, param);

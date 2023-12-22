@@ -10,7 +10,6 @@ export default class PianoUI extends ListInportUI<'kslider'> {
   lowNote: number;
   highNote: number;
   sendStack: boolean[] = [true];
-  //activeKey!: number;
   send: boolean = true;
   constructor(
     override meta: CustomRNBOInputMetadata<'List', 'kslider'>,
@@ -51,11 +50,10 @@ export default class PianoUI extends ListInportUI<'kslider'> {
           this.data = [note]; // set new active key
           this.element.toggleKey(key, false); // turn off previous key triggering event type B2 - previous note off
         }
-        if (this.sendStack.pop() && !isRepeat) {
+        if (this.sendStack.pop() && !isRepeat && this.send) {
           listener.next([this.tag, ...this.data]);
         }
       }
     );
   }
-
 }

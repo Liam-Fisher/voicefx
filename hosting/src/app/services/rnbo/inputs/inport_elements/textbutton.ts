@@ -14,8 +14,8 @@ export default class TextButtonUI extends ListInportUI<'textbutton'> {
     device: BaseDevice
   ) {
     super(meta, tag, device);
-    this.text = this.meta?.text ?? 'play';
-    this.texton = this.meta?.texton ?? null;
+    this.text = this.meta?.text ?? 'playing';
+    this.texton = this.meta?.texton ?? 'stopped';
     this.sendOnChange = true;
   }
   createElement() {
@@ -39,9 +39,9 @@ export default class TextButtonUI extends ListInportUI<'textbutton'> {
   linkElementToInput(listener: BehaviorSubject<[string, ...number[]]>) {
     this.element.on('change', (v: boolean) => {
         this.data = [+v];
-        if((!this.tag)||!this.data.length) {
+        if(this.tag&&this.data.length) {
             listener.next([this.tag, ...this.data]);
         }
     });
-}
+  }
 }

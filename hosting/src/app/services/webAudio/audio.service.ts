@@ -65,8 +65,8 @@ export class AudioService {
     }
   }
   catch(err) {
-    console.log(`error getting audio context`);
-    console.log(err);
+    //console.log(`error getting audio context`);
+    //console.log(err);
   }
     this.isAudioLoaded.next(true);
     return this._ctx;
@@ -95,15 +95,15 @@ export class AudioService {
     let testSrc = this.ctx.createBufferSource();
     testSrc.buffer = buf;
     testSrc.connect(tgt ?? this.ctx.destination);
-    console.log(`beginning buffer playback test`);
+    //console.log(`beginning buffer playback test`);
     testSrc.start();
     testSrc.onended = () => {
-      console.log(`buffer playback test complete`);
+      //console.log(`buffer playback test complete`);
     };
   }
   routeOut<T extends AudioNode>(tgtNode: T) {
     if (tgtNode.numberOfOutputs > 0) {
-      console.log(`connecting targetNode to destination`);
+      //console.log(`connecting targetNode to destination`);
       tgtNode.connect(this.ctx.destination);
     }
   }
@@ -122,8 +122,8 @@ export class AudioService {
       this.makeConnections(node, true, connections?.sourceMap);
       this.makeConnections(node, false, connections?.sinkMap);
     } catch (e) {
-      console.log(`failed to make connections for node: `);
-      console.log(node);
+      //console.log(`failed to make connections for node: `);
+      //console.log(node);
       throw e;
     }
   }

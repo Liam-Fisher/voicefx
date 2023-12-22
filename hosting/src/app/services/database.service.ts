@@ -22,7 +22,7 @@ export class DatabaseService {
 // Firebase Cloud Storage
 async listStorageNames(path: string): Promise<string[]> {
   const  results = await listAll(ref(this.storage, path));
-  console.log(`results: ${results.items}`);
+  //console.log(`results: ${results.items}`);
   return results.items.map((ref) => ref.name.split('.')[0]);
 }
 getRef(path: string) {
@@ -42,7 +42,7 @@ async loadPatcher(folder: string, id: string) {
   return this.loadJSON(`rnbo_devices/${folder}/${id}.export`);
 }
 async loadAudio(audioCtx: AudioContext, path: string): Promise<AudioBuffer> {
-  console.log(`audio from path ${path}`)
+  //console.log(`audio from path ${path}`)
   let bytes = await getBytes(ref(this.storage, path));
   return audioCtx.decodeAudioData(bytes);
 }

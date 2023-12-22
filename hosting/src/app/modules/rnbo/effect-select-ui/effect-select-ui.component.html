@@ -1,21 +1,3 @@
-<!-- 
-    replace with svg image icons??
- -->
-
-
-<button 
-  *ngFor="let effect of effects" [title]="effect.title"
-  [ngClass]="(currentSelection|async) === effect.id ? 'selected-effect-icon' : 'effect-icon'"
-  (click)="selectEffect(effect.id)">
-  <span class="front">
-    {{effect.emoji}}
-  </span>
-</button> 
-
-  <!-- 
-<ng-container *ngFor="let effect of effects;">
-  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" (click)="selectEffect(effect.id, effect.preset)" [title]="effect.title">
-    <rect [ngClass]="(currentSelection|async) === effect.id ? 'selected-effect-icon' : 'effect-icon'"  height="40" rx="5" ry="5"></rect>
-    <text x="50" y="22" text-anchor="middle" fill="white">{{ effect.emoji }}</text>
-  </svg>
-</ng-container> -->
+<select>
+  <option *ngFor="let option of optionsList" [value]="option">{{ option }}</option>
+</select>

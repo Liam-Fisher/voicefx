@@ -3,9 +3,9 @@
 <app-device-selection-menu
   class="device-menu-container"
 ></app-device-selection-menu> -->
-<app-effect-select-ui
-class="effect-select-container"
-></app-effect-select-ui>
+<app-preset-select class="preset-ui"
+*ngIf="rnboService.isDeviceLoaded | async"
+></app-preset-select>
   <app-device-ui
     class="device-ui"
     *ngIf="rnboService.isDeviceLoaded | async"

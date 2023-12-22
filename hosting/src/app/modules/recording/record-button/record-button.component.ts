@@ -38,7 +38,7 @@ export class RecordButtonComponent {
     private cdRef: ChangeDetectorRef
   ) {}
   ngAfterViewInit() {
-    console.log(`rendering`);
+    //console.log(`rendering`);
     //this.render();
   }
  
@@ -47,7 +47,7 @@ export class RecordButtonComponent {
     this.audioService.testSound();
   }
   handleRecordClick(evt: any) {
-    console.log(`record button clicked`, evt);
+    //console.log(`record button clicked`, evt);
     if (this.isRecording.value) {
       this.mediaRecorder?.stop();
     } else {
@@ -61,14 +61,13 @@ export class RecordButtonComponent {
     this.isRecording.next(false);
     clearTimeout(this.recordingTimeout);
     this.recordingTimeout = null;
-    console.log(`created blob`);
+    //console.log(`created blob`);
     this.recordedAudio = new Blob(this.audioChunks, {
       type: 'audio/wav',
     });
     this.audioChunks = [];
     this.cdRef.detectChanges();
     await this.audioService.encodeBlob(this.recordedAudio);
-    this.rnboService.connectToRecording();
   }
 recordAudioInput() {
     navigator.mediaDevices
@@ -89,12 +88,12 @@ recordAudioInput() {
         };
 
         this.mediaRecorder.onstop = () => {
-          console.log('recording stopped');
+          //console.log('recording stopped');
           this.stoppedRecording();
         };
 
         this.mediaRecorder.start();
-        console.log(`recording for up too ${this.maxRecordingTime}ms`);
+        //console.log(`recording for up too ${this.maxRecordingTime}ms`);
 
       })
       .catch((error) => {

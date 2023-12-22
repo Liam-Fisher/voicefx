@@ -29,8 +29,12 @@ export class PlayButtonComponent {
   constructor(public audioService: AudioService, public rnboService: RnboService, private cdRef: ChangeDetectorRef) {}
   ngOnInit() {
     this.audioService.isAudioLoaded.subscribe((isLoaded: boolean) => {
-      console.log(`isLoaded: ${isLoaded}`);
+      ////console.log(`isLoaded: ${isLoaded}`);
     });
+   /*  this.rnboService.loadingBuffer.subscribe((isLoaded: boolean) => {
+
+      this.cdRef.detectChanges();
+    }); */
   }
   get isReady() {
     return this.audioService.isRecordingBufferLoaded.asObservable();
@@ -57,7 +61,7 @@ export class PlayButtonComponent {
             '--animation-duration',
             '0s'
           );
-          console.log( `completed playback `);
+          //console.log( `completed playback `);
           this.isPlaying.next(false);
           this.cdRef.detectChanges();
         };

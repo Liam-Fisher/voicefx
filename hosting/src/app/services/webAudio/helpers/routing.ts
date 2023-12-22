@@ -12,14 +12,14 @@ export function addNode<T extends AudioNode>(
       this.makeConnections(node, true, connections?.sourceMap);
       this.makeConnections(node, false, connections?.sinkMap);
     } catch (e) {
-      console.log(`failed to make connections for node: `);
-      console.log(node);
+      //console.log(`failed to make connections for node: `);
+      //console.log(node);
       throw e;
     }
 }
 export function routeOut<T extends AudioNode>(tgtNode: T) {
     if (tgtNode.numberOfOutputs > 0) {
-      console.log(`connecting targetNode to destination`);
+      //console.log(`connecting targetNode to destination`);
       tgtNode.connect(this.ctx.destination);
     }
   }

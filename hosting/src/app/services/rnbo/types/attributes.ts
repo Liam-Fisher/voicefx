@@ -1,3 +1,5 @@
+import { RadioGroupUI } from "../inputs/parameter_elements/radiogroup";
+
 export type GlobalAttributes = {
   bgcolor?:[number, number, number, number];
   bordercolor?:[number, number, number, number];
@@ -33,11 +35,19 @@ export type InputAttributeMap = {
         elementcolor?:[number, number, number, number];
         knobcolor?: [number, number, number, number];
       };
+      kslider: {
+        offset?: number;
+        range: number;
+        hkeycolor?: [number, number, number, number];
+        whitekeycolor?:[number, number, number, number];
+        blackkeycolor?:[number, number, number, number];
+      };
       //no fully corresponding maxobj
       //pan: {}
     };
     Enum: {
       umenu: TextStyle;
+      radiogroup: {};
       toggle: {
         checkedcolor?: [number, number, number, number];
         uncheckedcolor?: [number, number, number, number];
@@ -123,6 +133,7 @@ export type InputAttributeMap = {
     hint?: string;
     messageOnly?: boolean;
     rect?: [number, number, number, number];
+    minSize?: [number, number];
 };
 
 export type InputAttributes<T extends keyof InputAttributeMap, UI extends UIType<T>> = InputAttributeMap[T][UI]&GenericAttributes;

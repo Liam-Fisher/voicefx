@@ -1,57 +1,29 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { RnboService } from 'src/app/services/rnbo/rnbo.service';
 
 @Component({
   selector: 'app-effect-select-ui',
-  templateUrl: './effect-select-ui.component.html',
+  template: ` 
+  <select (change)="onSelectionChange($event)">
+    <option *ngFor="let option of (rnboService.presetNames|async)" [value]="option">{{ option }}</option>
+</select>`,
   styleUrls: ['./effect-select-ui.component.css']
 })
 export class EffectSelectUiComponent {
   currentSelection = new BehaviorSubject<string>('robot');
-  readonly effects = [
-    {
-      "title": "robot",
-      "id": "robot",
-      "preset": "robot",
-      "emoji": "🤖",
-      "folder": "voice-fx"
-    },
-    {
-      "title": "squirrel",
-      "id": "squirrel",
-      "preset": "squirrel",
-      "emoji": "🐿",
-      "folder": "voice-fx"
-    },
-    {
-      "title": "monster",
-      "id": "monster",
-      "preset": "monster",
-      "emoji": "🧟‍♂️",
-      "folder": "voice-fx"
-    },
-    
-    {
-      "title": "loop",
-      "id": "loop",
-      "emoji": "?",
-      "folder": "voice-fx"
-    },
-    {
-      "title": "alien",
-      "id": "alien",
-      "preset": "alien",
-      "emoji": "👽"
-    } 
-  ];
+  optionsList = new BehaviorSubject<string>('robot');
+  @ViewChild('selectcontainer', { static: false }) selectcontainer!: ElementRef<HTMLDivElement>;
   constructor(public rnboService: RnboService) { }
-  
-  selectEffect(id: string) {
-
-    console.log(`selected device ${id}`);
+  ngAfterViewInit() {
+    const  id = 'main';
     this.rnboService.loadDevice({id, folder: 'voice-fx'}).then(() => {
       this.currentSelection.next(id);
-    });
-  }
+      });
+    }
+    onSelectionChange(event: Event): void {
+      const selectedOption = (event.target as HTMLSelectElement).value;
+      //console.log('Selected preset:', selectedOption);
+      this.rnboService.setDevicePreset(selectedOption);
+    }
 }

@@ -180,7 +180,7 @@ const writeJsonFile = (filePath, data) => {
   try {
     const jsonData = JSON.stringify(data, null, 2);
     writeFileSync(filePath, jsonData, 'utf-8');
-    console.log('JSON file written successfully!');
+    //console.log('JSON file written successfully!');
   } catch (error) {
     console.error('Error writing JSON file:', error);
   }

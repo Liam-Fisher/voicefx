@@ -1,21 +1,21 @@
-.icon-button {
+button {
+    height: inherit;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    background-color: #00000000;
+    background-image: linear-gradient(to bottom, #000000FF, #222222FF);
+    color: aliceblue;
 }
-#languageSelectionIcon {
-    height: 90%;
-    width: 90%;
+@media screen and (min-width: 600px) {
+    button {
+        font-size: 24px;
+    }
 }
-.icon-container {
-    width: 50px;
-    height: 50px;
-    background-color:aliceblue;
-    display: flex;
-    justify-content: center;    
-    align-items: center;
-}
-.icon-container > img {
-    width: 90%;
-    height: 90%;
+@media screen and (max-width: 601px) {
+    button {
+        font-size: 12px;
+        height: 24px;
+        width: 120px;
+    }
 }

@@ -1,18 +1,18 @@
 <div id="text-input"> 
-    <textarea 
-    type="text"
-    class="text-input"
-    placeholder="Say something..."
-    [formControl]="textData"></textarea>
-    <p 
-  [ngClass]="this.textData.errors?.['maxlength'] ? 'alert info' : 'info' ">
-  Input text cannot be more than 64 characters.
-</p> 
-    <app-language-input class="translate-button">
+  <textarea 
+  type="text"
+  class="text-input"
+  placeholder="Say something..."
+  [formControl]="textData">
+  </textarea>
+  
+  
+
+    <app-language-input class="translate-button" (languageChange)="language = $event">
     </app-language-input>
     <button class="submit-button" (click)="onSubmit()">
-      Create Speech
+Synthesize Speech
     </button>
-    
+
 </div>
 

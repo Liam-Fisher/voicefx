@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Form, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { RnboService } from 'src/app/services/rnbo/rnbo.service';
 import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
@@ -11,6 +11,7 @@ import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
 export class TextInputComponent {
   textData!: FormControl<string|null>;
   language: string = navigator.language;
+  @ViewChild('languageMenu', { static: false }) languageInput!: ElementRef<HTMLSelectElement>;
 
   /* ttsForm!: FormGroup<{
     textInput: FormControl<string|null>,
@@ -18,7 +19,7 @@ export class TextInputComponent {
   }>;   */
   constructor(private rnboService: RnboService, private textToSpeechService: TextToSpeechService/* , private fb: FormBuilder */) { }
   ngOnInit() {
-    console.log(navigator.language);
+    //console.log(navigator.language);
     this.textData = new FormControl('', [
       Validators.required,
       Validators.minLength(2),
@@ -26,10 +27,10 @@ export class TextInputComponent {
     ]);
   }
   get text() {
-    return this.textData.getRawValue()
+    return this.textData.getRawValue();
   }
   onSubmit() {
-    console.log(`form submitted`);
+    this.rnboService.loadingBuffer.next(true);
     this.textToSpeechService.speak(this.text,  this.language).then((filename: string) => {
       this.rnboService.audioForFile(filename);
     }); 
