@@ -166,6 +166,11 @@ export class AudioService {
   }
   setupContext() {
     this._ctx = new AudioContext();
+    console.log(`audio context created`);
+    console.log(`samplerate: ${this._ctx.sampleRate}}`);
+    console.log(`baseLatency: ${this._ctx.baseLatency}}`);
+    console.log(`outputLatency: ${this._ctx.outputLatency}}`);
+    
     if(!this._ctx) {
       throw new Error(`audio context not loaded`);
     }

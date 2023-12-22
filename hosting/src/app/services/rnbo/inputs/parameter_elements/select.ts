@@ -18,6 +18,6 @@ export class SelectUI extends EnumParameterUI<'umenu'> {
         return index;
     }
     updateElement(value: number): void { 
-        this.element.value = value;
+        this.element.selectedIndex = value;
     }
 }

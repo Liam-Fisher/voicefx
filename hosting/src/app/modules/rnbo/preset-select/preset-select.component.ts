@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { RnboService } from 'src/app/services/rnbo/rnbo.service';
 import { StylingService } from 'src/app/services/styling.service';
@@ -48,11 +48,11 @@ export class PresetSelectComponent {
   currentSelection = new BehaviorSubject<string>('robot');
   @ViewChild('selectcontainer', { static: false })
   selectcontainer!: ElementRef<HTMLDivElement>;
-  constructor(public rnboService: RnboService, public styling: StylingService) {}
+  constructor(public rnboService: RnboService, public styling: StylingService, private cdRef: ChangeDetectorRef) {}
   onPresetClick(preset: string): void {
     this.currentSelection.next(preset);
     console.log('Selected preset:', preset);
     this.rnboService.setDevicePreset(preset);
-
+    this.cdRef.detectChanges();
   }
 }
