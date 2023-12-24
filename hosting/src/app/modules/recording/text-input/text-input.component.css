@@ -48,6 +48,9 @@ button {
     textarea {
         font-size: 24px;
     }
+    button {
+            font-size: 24px;
+    }
 }
 @media screen and (max-width: 601px) {
     #text-input {
@@ -64,8 +67,6 @@ button {
     }
     button {
             font-size: 12px;
-            height: 24px;
-            width: 120px;
     }
 
 }
